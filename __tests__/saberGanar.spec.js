@@ -17,16 +17,16 @@ function loadTemplate(filepath, onLoad) {
 
 describe("the test", function(){
 
-   beforeEach(function(done){
-       loadTemplate('../templates/body.html', function(text){
-           document.body.innerHTML = text;
-           done();
-       });
-   });
+    beforeEach(function(done){
+        loadTemplate('../templates/saberGanar.html', function(text){
+            document.body.innerHTML = text;
+            done();
+        });
+    });
 
-   it('loads the markup', function(){
-       expect(
-           document.getElementById('start--button'))
-           .not.toBeNull();
-   });
+    it('loads the markup', function(){
+        expect(
+            document.getElementsByClassName('btnStart'))
+            .not.toBeNull();
+    });
 });
