@@ -1,47 +1,40 @@
-    <header>
-        <h1 class="page--title">Saber y ganar</h1>
-        <h2 class="page--subtitle">Todo es empezar</h2>
-        <ul>
-            <li>Tienes 20 segundos para responder cada pregunta.</li>
-            <li>La puntuación depende del tiempo que tardes en contestar</li>
-            <li>Las respuestas incorrectas y las preguntas que no se respondan restan puntos</li>
-            <p>je je je je je je je je</p>
-        </ul>
-
-        <button type="button" id="start--button" class="start--button">Empieza a jugar</button>
-    </header>
-
-    <main>
-        <div class="questions__container hidden">
-            <h3 class="question--title"></h3>
-            <ul class="answer--list">
-                <span class="clock"></span>
-
-                <li class="asnwer--option">
-                    <input type="radio" value="" name="radAnswer" class="input-radio">
-                    <label class="question--answer"></label>
-                </li>
-
-                <li class="asnwer--option">
-                    <input type="radio" value="" name="radAnswer" class="input-radio">
-                    <label class="question--answer"></label>
-                </li>
-
-                <li class="asnwer--option">
-                    <input type="radio" value="" name="radAnswer" class="input-radio">
-                    <label class="question--answer"></label>
-                </li>
-
-            </ul>
-            <p>Selecciona la respuesta que creas correcta</p>
-
-            <h3 class="result--title"></h3>
-            <h3 class="result--score"></h3>
-            <button id="next--question--button">Pasa a la siguiente pregunta</button>
+<header class="header">
+    <h1>Saber y ganar</h1>
+    <p>Acierta lo más rápido que puedas</p>
+</header>
+<main class="main">
+    <div class="game">
+        <h3>Preguntas</h3>
+        <div class="questions">
 
         </div>
+        <div class="message" id="message">
 
-        <div class="scores__container"></div>
-        <div class="statistics__container"></div>
-    </main>
+        </div>
+        <button class="btnStart">EMPEZAR</button>
+        <button class="btn invisible">¡Dale!</button>
+    </div>
+    <div class="scores"><h3>Marcadores</h3>
+        <div class="nameBox invisible" id="nameBox">
+            <label for="inputNameId" class="introduce"></label>
+            <input type="text" id="inputNameId" name="inputName" placeholder="Escribe tu nombre">
+            <button class="btnSave">Guardar</button>
+        </div>
+        <ul class="list">
 
+        </ul>
+    </div>
+
+
+    <div class="stadistics"><h3>Estadísticas</h3>
+        <div class="speed">Velocidad promedio respondiendo:<div class="speedSeconds"></div></div>
+        <div class="corrects">Preguntas acertadas:<div class="correctNumber"></div></div>
+        <div class="incorrects">Preguntas falladas:<div class="incorrectNumber"></div></div>
+
+    </div>
+
+    <div class="bonus">
+        <div class="time">Tiempo: <div class="seconds" id="seconds"></div></div>
+        <div class="realPoints">Puntos: <div class="scoreUI" id="scoreUI"></div></div>
+    </div>
+</main>

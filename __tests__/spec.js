@@ -14,21 +14,23 @@ function loadTemplate(filepath, onLoad) {
     });
 }
 
-describe("the test", function(){
+describe("the test", function () {
+    let app;
 
-   beforeEach(function(done){
-       loadTemplate('../views/body.html', function(text){
-           document.body.innerHTML = text;
-           done();
-       });
-   });
+    beforeEach(function (done) {
+        loadTemplate('../views/body.html', function (text) {
+            document.body.innerHTML = text;
+            app = application();
+            done();
+        });
+    });
 
-   it('loads the markup', function(){
-       expect(
-           document.getElementById('start--button'))
-           .not.toBeNull();
-   });
-   xit('should press start button', function (done) {
+    it('loads the markup', function () {
+        expect(
+            document.getElementById('start--button'))
+            .not.toBeNull();
+    });
+    xit('should press start button', function (done) {
         // This test is not going to work because jsdom does not implement
         // the MutationObserver object. It would work with a real browser.
 
@@ -36,8 +38,8 @@ describe("the test", function(){
         console.log(buttonStart.classList.toggle('invisible'));
         buttonStart.click();
         let questionsBox = document.getElementById('questions');
-        var config = { attributes: true, childList: true };
-        var callback = function(mutationsList) {
+        var config = {attributes: true, childList: true};
+        var callback = function (mutationsList) {
             let answer = document.getElementById('3');
             answer.click();
             let dale = document.getElementById('btn');
@@ -49,5 +51,5 @@ describe("the test", function(){
         var observer = new MutationObserver(callback);
         observer.observe(questionsBox, config);
         observer.disconnect();
-   });
+    });
 });
