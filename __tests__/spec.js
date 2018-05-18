@@ -33,14 +33,37 @@ describe("the test", function () {
             .not.toBeNull();
     });
 
-    it('should press start button', function () {
+    it('should press start button and answer a question', function () {
         // This test is not going to work because jsdom does not implement
         // the MutationObserver object. It would work with a real browser.
+        clickStartButton();
+        selectAnswer();
+        submitAnswer();
+        checkScore();
+    });
+
+
+    function clickStartButton() {
         let startButton = document.getElementById('start-button');
         startButton.click();
+    }
+
+    function selectAnswer() {
         let answer = document.getElementById('0');
         answer.click();
-        answer = document.getElementById('0');
         expect(answer.checked).toBeTruthy();
-    });
+    }
+
+    function submitAnswer() {
+        let submitAnswerButton = document.getElementById('submit-answer');
+        expect(submitAnswerButton.disabled).toBeFalsy(); //todo wait 1 second to click
+        // the test fails because enable button is not on a event
+        // is on a timer that update UI every 1 second
+        submitAnswerButton.click();
+    }
+
+    function checkScore() {
+        let score = document.getElementById('scoreUI');
+        expect(score.innerText).not.toBe('0'); //todo check real score
+    }
 });
