@@ -1,5 +1,4 @@
 function application() {
-    'use strict';
 
     const questionsWithAnswers = [
         {
@@ -122,7 +121,6 @@ function application() {
                 addAnswer(x);
             }
             actualQuestionSelected++;
-            message.innerHTML = '';
         } else {
             nameBox.classList.toggle('invisible');
             btnSend.disabled = true; //Se desabilita cuando llega al final de las preguntas
@@ -206,8 +204,8 @@ function application() {
         seconds = 0;
     }
 
-    function updateMessage(message) {
-        message.innerHTML = `<h3>${message}</h3>`;
+    function updateMessage(messageText) {
+        message.innerHTML = `<h3>${messageText}</h3>`;
     }
 
     function updateTotalPointsIfFails() {
@@ -285,10 +283,14 @@ function application() {
         btnSend.classList.toggle('invisible');
         boxQuestions.classList.add('invisible');
         nameBox.classList.add('invisible');
-        message.innerHTML = '';
+        updateMessage('');
     }
 
     return {
         start
     }
+}
+
+if (typeof module !== 'undefined') {
+    module.exports = application;
 }
