@@ -19,7 +19,8 @@ describe("the test", function () {
     let app;
 
     beforeEach(function (done) {
-        loadTemplate('../views/body.html', function (text) {
+        //todo: add all the modules of the app on document
+        loadTemplate('../views/game.html', function (text) {
             document.body.innerHTML = text;
             app = application();
             app.start();
