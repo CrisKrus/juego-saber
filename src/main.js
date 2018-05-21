@@ -49,11 +49,11 @@ function application() {
     ];
     const boxQuestions = document.querySelector('.questions');
     const btnSend = document.querySelector('.btn');
-    const btnStart = document.querySelector('.btnStart');
+    const btnStart = document.querySelector('.btnStart'); //todo disable button when game start
 
     let message;
     let timer;
-    let nameBox;
+    let nameBox; //todo make it invisible while the user is playing
     let scoreUI;
     let totalPoints;
     let seconds;

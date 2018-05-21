@@ -1,31 +1,16 @@
-const fs = require('fs');
-const path = require('path');
 const chai = require('chai');
+const pug = require('pug');
 const application = require('../src/main');
 chai.expect();
-
-function loadTemplate(filepath, onLoad) {
-    const filePath = path.join(__dirname, filepath);
-    fs.readFile(filePath, {encoding: 'utf-8'}, function (err, data) {
-        if (!err) {
-            onLoad(data);
-        } else {
-            console.log(err);
-        }
-    });
-}
 
 describe("the test", function () {
     let app;
 
-    beforeEach(function (done) {
+    beforeEach(function () {
         //todo: add all the modules of the app on document
-        loadTemplate('../views/game.html', function (text) {
-            document.body.innerHTML = text;
-            app = application();
-            app.start();
-            done();
-        });
+        document.body.innerHTML = pug.compileFile('./views/main.pug', null)();
+        app = application();
+        app.start();
     });
 
     it('loads the markup', function () {
@@ -34,17 +19,17 @@ describe("the test", function () {
             .not.toBeNull();
     });
 
-    it('should press start button and answer a question', function () {
-        // This test is not going to work because jsdom does not implement
-        // the MutationObserver object. It would work with a real browser.
-        clickStartButton();
+    it('should start the game and answer a question', function () {
+        startGame();
+
         selectAnswer();
         submitAnswer();
-        checkScore();
+
+        expectScoreToBeDifferentFromTheBeginning();
     });
 
 
-    function clickStartButton() {
+    function startGame() {
         let startButton = document.getElementById('start-button');
         startButton.click();
     }
@@ -63,7 +48,7 @@ describe("the test", function () {
         submitAnswerButton.click();
     }
 
-    function checkScore() {
+    function expectScoreToBeDifferentFromTheBeginning() {
         let score = document.getElementById('scoreUI');
         expect(score.innerText).not.toBe('0'); //todo check real score
     }
