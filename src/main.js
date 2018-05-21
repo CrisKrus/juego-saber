@@ -114,18 +114,34 @@ function application() {
         boxQuestions.classList.remove('invisible');
     }
 
+    function addEnableSendButtonEventToAnswers() {
+        let answers = document.querySelectorAll('.answer');
+        for (let answer of answers) {
+            answer.addEventListener('click', () => {enableSendAnswerButton();});
+        }
+    }
+
+    function enableSendAnswerButton() {
+        btnSend.disabled = false
+    }
+
     function printQuestionAndAnswers() {
         if (actualQuestionSelected < questionsWithAnswers.length) {
             setQuestion();
             for (let x = 0; x < questionsWithAnswers[actualQuestionSelected].answers.length; x++) {
                 addAnswer(x);
             }
+            addEnableSendButtonEventToAnswers();
             actualQuestionSelected++;
         } else {
             nameBox.classList.toggle('invisible');
-            btnSend.disabled = true; //Se desabilita cuando llega al final de las preguntas
             stopAndResetTimer()
         }
+        disableSendAnswerButton();
+    }
+
+    function disableSendAnswerButton() {
+        btnSend.disabled = true;
     }
 
     function setQuestion() {
@@ -155,23 +171,11 @@ function application() {
             totalPoints -= 3;
             printScoreUI()
         }
-        btnSend.disabled = true; //TODO disable button at the beginning of the round
-        let answers = document.querySelectorAll('.answer');
-        btnSend.disabled = !isAnyAnswerSelected(answers);
-    }
-
-    function isAnyAnswerSelected(answers) {
-        for (let a of answers) {
-            if (a.checked) {
-                return true
-            }
-        }
-        return false;
     }
 
     function readUserAnswer() {
-        const arrayRadioAnswers = document.querySelectorAll('.answer');
-        getOptionChecked(arrayRadioAnswers);
+        const answers = document.querySelectorAll('.answer');
+        getOptionChecked(answers);
 
         //todo extract that method
         found = questionsWithAnswers.find(function (question) {
@@ -183,10 +187,10 @@ function application() {
         correctIncorrectAnswer(found, optionChecked);
     }
 
-    function getOptionChecked(arrayRadioAnswers) {
-        for (let i = 0; i < arrayRadioAnswers.length; i++) {
-            if (arrayRadioAnswers[i].checked) {
-                optionChecked = arrayRadioAnswers[i];
+    function getOptionChecked(answers) {
+        for (let i = 0; i < answers.length; i++) {
+            if (answers[i].checked) {
+                optionChecked = answers[i];
             }
         }
     }

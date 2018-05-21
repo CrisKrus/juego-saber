@@ -42,14 +42,12 @@ describe("the test", function () {
 
     function submitAnswer() {
         let submitAnswerButton = document.getElementById('submit-answer');
-        expect(submitAnswerButton.disabled).toBeFalsy(); //todo wait 1 second to click
-        // the test fails because enable button is not on a event
-        // is on a timer that update UI every 1 second
+        expect(submitAnswerButton.disabled).toBeFalsy();
         submitAnswerButton.click();
     }
 
     function expectScoreToBeDifferentFromTheBeginning() {
         let score = document.getElementById('scoreUI');
-        expect(score.innerText).not.toBe('0'); //todo check real score
+        expect(score.innerText).not.toBe('0 puntos');
     }
 });
