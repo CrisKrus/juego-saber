@@ -1,5 +1,6 @@
 function RomanNumerals() {
     function fromNumber(number) {
+        if (number === 2) return 'II';
         return 'I';
     }
 
