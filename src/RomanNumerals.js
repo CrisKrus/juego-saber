@@ -1,5 +1,5 @@
 function RomanNumerals() {
-    function fromNumber() {
+    function fromNumber(number) {
         return 'I';
     }
 
@@ -8,4 +8,4 @@ function RomanNumerals() {
     };
 }
 
-module.exports = new RomanNumerals();
+module.exports = new RomanNumerals;
