@@ -7,7 +7,6 @@ describe("the test", function () {
     let app;
 
     beforeEach(function () {
-        //todo: add all the modules of the app on document
         document.body.innerHTML = pug.compileFile('./views/main.pug', null)();
         app = application();
         app.start();
@@ -19,7 +18,7 @@ describe("the test", function () {
             .not.toBeNull();
     });
 
-    it('should start the game and answer a question', function () {
+    it('should start the game, answer a question and change the score', function () {
         startGame();
 
         selectAnswer();
@@ -40,14 +39,34 @@ describe("the test", function () {
         expect(answer.checked).toBeTruthy();
     }
 
+    function expectToBeAbleToSendTheAnswer(submitAnswerButton) {
+        expect(submitAnswerButton.disabled).toBeFalsy();
+    }
+
     function submitAnswer() {
         let submitAnswerButton = document.getElementById('submit-answer');
-        expect(submitAnswerButton.disabled).toBeFalsy();
+        expectToBeAbleToSendTheAnswer(submitAnswerButton);
         submitAnswerButton.click();
     }
 
     function expectScoreToBeDifferentFromTheBeginning() {
         let score = document.getElementById('scoreUI');
-        expect(score.innerText).not.toBe('0 puntos');
+        expect(score.innerHTML).not.toBe('0 puntos');
     }
+
+    function expectQuestionAndAnswersToBeDifferentFromPreciousOne(question) {
+        let newQuestion = document.getElementById('question').textContent;
+        expect(question).toEqual(newQuestion);
+    }
+
+    it('should start the game, answer a question and change the question', function () {
+        startGame();
+
+        let question = document.getElementById('question').textContent;
+        selectAnswer();
+        submitAnswer();
+
+        expectQuestionAndAnswersToBeDifferentFromPreciousOne(question);
+    });
+
 });
