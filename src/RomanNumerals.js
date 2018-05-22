@@ -1,6 +1,7 @@
 function RomanNumerals() {
     function fromNumber(number) {
-        return number === 2 && 'II'
+        return number === 3 && 'III'
+            || number === 2 && 'II'
             || 'I';
     }
 
