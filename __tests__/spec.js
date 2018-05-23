@@ -1,9 +1,9 @@
 const chai = require('chai');
 const pug = require('pug');
 const application = require('../src/main');
-chai.expect();
+// const expect = chai.expect();
 
-describe("the test", function () {
+describe("the game", function () {
     let app;
 
     beforeEach(function () {

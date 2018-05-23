@@ -1,52 +1,81 @@
 function application() {
 
-    const questions = [
-        {
-            id: 1,
-            question: "¿Cuál es la capital de Portugal?",
-            answers: [
-                {id: 0, answer: "Faro", isCorrect: false, idQuestion: 1},
-                {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 1},
-                {id: 2, answer: "Lisboa", isCorrect: true, idQuestion: 1}
-            ]
-        },
-        {
-            id: 2,
-            question: "¿Cuál es la capital de Egipto?",
-            answers: [
-                {id: 0, answer: "Faro", isCorrect: false, idQuestion: 2},
-                {id: 1, answer: "El Cairo", isCorrect: true, idQuestion: 2},
-                {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 2}
-            ]
-        },
-        {
-            id: 3,
-            question: "¿Cuál es la capital de Zambia?",
-            answers: [
-                {id: 0, answer: "Lusaka", isCorrect: true, idQuestion: 3},
-                {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 3},
-                {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 3}
-            ]
-        },
-        {
-            id: 4,
-            question: "¿Cuál es la capital de Jordania?",
-            answers: [
-                {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 4},
-                {id: 1, answer: "Amán", isCorrect: true, idQuestion: 4},
-                {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 4}
-            ]
-        },
-        {
-            id: 5,
-            question: "¿Cuál es la capital de Panama?",
-            answers: [
-                {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 5},
-                {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 5},
-                {id: 2, answer: "Ciudad de Panamá", isCorrect: true, idQuestion: 5}
-            ]
+    let questionNavigator = function () {
+        let actualQuestionIndex = 0;
+        const questions = [
+            {
+                id: 1,
+                question: "¿Cuál es la capital de Portugal?",
+                answers: [
+                    {id: 0, answer: "Faro", isCorrect: false, idQuestion: 1},
+                    {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 1},
+                    {id: 2, answer: "Lisboa", isCorrect: true, idQuestion: 1}
+                ]
+            },
+            {
+                id: 2,
+                question: "¿Cuál es la capital de Egipto?",
+                answers: [
+                    {id: 0, answer: "Faro", isCorrect: false, idQuestion: 2},
+                    {id: 1, answer: "El Cairo", isCorrect: true, idQuestion: 2},
+                    {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 2}
+                ]
+            },
+            {
+                id: 3,
+                question: "¿Cuál es la capital de Zambia?",
+                answers: [
+                    {id: 0, answer: "Lusaka", isCorrect: true, idQuestion: 3},
+                    {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 3},
+                    {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 3}
+                ]
+            },
+            {
+                id: 4,
+                question: "¿Cuál es la capital de Jordania?",
+                answers: [
+                    {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 4},
+                    {id: 1, answer: "Amán", isCorrect: true, idQuestion: 4},
+                    {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 4}
+                ]
+            },
+            {
+                id: 5,
+                question: "¿Cuál es la capital de Panama?",
+                answers: [
+                    {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 5},
+                    {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 5},
+                    {id: 2, answer: "Ciudad de Panamá", isCorrect: true, idQuestion: 5}
+                ]
+            }
+        ];
+
+        function isThereMoreQuestions() {
+            return actualQuestionIndex < questions.length;
         }
-    ];
+
+        function getQuestion() {
+            return questions[actualQuestionIndex];
+        }
+
+        function goToNextQuestion() {
+            if (isThereMoreQuestions()) {
+                actualQuestionIndex++;
+            }
+        }
+
+        function resetQuestions() {
+            actualQuestionIndex = 0;
+        }
+
+        return {
+            isThereMoreQuestions,
+            goToNextQuestion,
+            getQuestion,
+            resetQuestions
+        }
+    };
+
     const boxQuestions = document.querySelector('.questions');
     const btnSend = document.querySelector('.btn');
     const btnStart = document.querySelector('.btnStart'); //todo disable button when game start
@@ -57,21 +86,19 @@ function application() {
     let scoreUI;
     let totalPoints;
     let seconds;
-    let actualQuestionSelected;
     let sumPoints;
     let listNames;
-    let question;
-    let optionChecked;
     let inSetInterval;
     let score;
+    let navigator = questionNavigator();
 
     function start() {
-        getElementsFromUI();
+        setElementsFromUI();
         initializeApplicationVariables();
         setButtonsListeners();
     }
 
-    function getElementsFromUI() {
+    function setElementsFromUI() {
         message = document.getElementById('message');
         timer = document.getElementById('seconds');
         nameBox = document.getElementById('nameBox');
@@ -81,7 +108,6 @@ function application() {
     function initializeApplicationVariables() {
         totalPoints = 0;
         seconds = 0;
-        actualQuestionSelected = 0;
         score = { //Se guardan los nombres y las puntuaciones de cada jugador
             names:
                 [],
@@ -94,8 +120,8 @@ function application() {
     function setButtonsListeners() {
         btnSend.addEventListener('click', readUserAnswer);
         btnSend.addEventListener('click', function () {
+            navigator.goToNextQuestion();
             printQuestionAndAnswers();
-            goToNextQuestion();
         });
 
         btnStart.addEventListener('click', onStart);
@@ -106,9 +132,8 @@ function application() {
 
     function onStart() {
         changeButtonsVisibility();
-        actualQuestionSelected = 0;
+        navigator.resetQuestions();
         printQuestionAndAnswers();
-        goToNextQuestion();
         inSetInterval = setInterval(timerAction, 1000); //El setInterval en una variable par luego utilizarla con el clearInterval
     }
 
@@ -132,8 +157,8 @@ function application() {
     }
 
     function printQuestionAndAnswers() {
-        if (thereIsMoreQuestions()) {
-            let question = getQuestion();
+        if (navigator.isThereMoreQuestions()) {
+            let question = navigator.getQuestion();
             printQuestion(question);
             printAnswers(question.answers);
             addEnableSendButtonEventToAnswers();
@@ -147,24 +172,6 @@ function application() {
         nameBox.classList.toggle('invisible');
         stopAndResetTimer()
     }
-
-    //////////////////////////////////////
-
-    function thereIsMoreQuestions() {
-        return actualQuestionSelected < questions.length;
-    }
-
-    function getQuestion() {
-        return questions[actualQuestionSelected];
-    }
-
-    function goToNextQuestion() {
-        if (thereIsMoreQuestions()) {
-            actualQuestionSelected++;
-        }
-    }
-
-    ////////////////////////////////////////
 
     function printAnswers(answers) {
         for (let i = 0; i < answers.length; i++) {
@@ -193,11 +200,11 @@ function application() {
 
     function timerAction() {
         seconds++;
-        timer.innerHTML = `${seconds}`;
+        timer.innerHTML = `${seconds}`;//todo extract this
         if (seconds === 20) {
             seconds = 0;
+            navigator.goToNextQuestion();
             printQuestionAndAnswers();
-            goToNextQuestion();
             totalPoints -= 3;
             printScoreUI()
         }
@@ -205,25 +212,24 @@ function application() {
 
     function readUserAnswer() {
         const answers = document.querySelectorAll('.answer');
-        getOptionChecked(answers);
-        question = getQuestion();
-        correctIncorrectAnswer(question, optionChecked);
+        let optionChecked = getOptionChecked(answers);
+        correctIncorrectAnswer(navigator.getQuestion().answers, optionChecked);
     }
 
     function getOptionChecked(answers) {
         for (let i = 0; i < answers.length; i++) {
             if (answers[i].checked) {
-                optionChecked = answers[i];
+                return answers[i];
             }
         }
     }
 
-    function correctIncorrectAnswer() {
-        if (question.answers[optionChecked.id].isCorrect === true) {
+    function correctIncorrectAnswer(answers, optionChecked) {
+        if (answers[optionChecked.id].isCorrect === true) {
             updateMessage('¡Correcta!');
             updateTotalPointsIfSuccess();
         }
-        else if (question.answers[optionChecked.id].isCorrect !== true) {
+        else if (answers[optionChecked.id].isCorrect !== true) {
             updateMessage('¡Incorrecta!');
             updateTotalPointsIfFails();
         }
