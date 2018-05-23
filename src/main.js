@@ -1,54 +1,7 @@
 function application() {
 
-    let questionNavigator = function () {
+    let questionNavigator = function (questions) {
         let actualQuestionIndex = 0;
-        const questions = [
-            {
-                id: 1,
-                question: "¿Cuál es la capital de Portugal?",
-                answers: [
-                    {id: 0, answer: "Faro", isCorrect: false, idQuestion: 1},
-                    {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 1},
-                    {id: 2, answer: "Lisboa", isCorrect: true, idQuestion: 1}
-                ]
-            },
-            {
-                id: 2,
-                question: "¿Cuál es la capital de Egipto?",
-                answers: [
-                    {id: 0, answer: "Faro", isCorrect: false, idQuestion: 2},
-                    {id: 1, answer: "El Cairo", isCorrect: true, idQuestion: 2},
-                    {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 2}
-                ]
-            },
-            {
-                id: 3,
-                question: "¿Cuál es la capital de Zambia?",
-                answers: [
-                    {id: 0, answer: "Lusaka", isCorrect: true, idQuestion: 3},
-                    {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 3},
-                    {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 3}
-                ]
-            },
-            {
-                id: 4,
-                question: "¿Cuál es la capital de Jordania?",
-                answers: [
-                    {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 4},
-                    {id: 1, answer: "Amán", isCorrect: true, idQuestion: 4},
-                    {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 4}
-                ]
-            },
-            {
-                id: 5,
-                question: "¿Cuál es la capital de Panama?",
-                answers: [
-                    {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 5},
-                    {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 5},
-                    {id: 2, answer: "Ciudad de Panamá", isCorrect: true, idQuestion: 5}
-                ]
-            }
-        ];
 
         function isThereMoreQuestions() {
             return actualQuestionIndex < questions.length;
@@ -80,6 +33,53 @@ function application() {
     const btnSend = document.querySelector('.btn');
     const btnStart = document.querySelector('.btnStart'); //todo disable button when game start
 
+    const questions = [
+        {
+            id: 1,
+            question: "¿Cuál es la capital de Portugal?",
+            answers: [
+                {id: 0, answer: "Faro", isCorrect: false, idQuestion: 1},
+                {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 1},
+                {id: 2, answer: "Lisboa", isCorrect: true, idQuestion: 1}
+            ]
+        },
+        {
+            id: 2,
+            question: "¿Cuál es la capital de Egipto?",
+            answers: [
+                {id: 0, answer: "Faro", isCorrect: false, idQuestion: 2},
+                {id: 1, answer: "El Cairo", isCorrect: true, idQuestion: 2},
+                {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 2}
+            ]
+        },
+        {
+            id: 3,
+            question: "¿Cuál es la capital de Zambia?",
+            answers: [
+                {id: 0, answer: "Lusaka", isCorrect: true, idQuestion: 3},
+                {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 3},
+                {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 3}
+            ]
+        },
+        {
+            id: 4,
+            question: "¿Cuál es la capital de Jordania?",
+            answers: [
+                {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 4},
+                {id: 1, answer: "Amán", isCorrect: true, idQuestion: 4},
+                {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 4}
+            ]
+        },
+        {
+            id: 5,
+            question: "¿Cuál es la capital de Panama?",
+            answers: [
+                {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 5},
+                {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 5},
+                {id: 2, answer: "Ciudad de Panamá", isCorrect: true, idQuestion: 5}
+            ]
+        }
+    ];
     let message;
     let timer;
     let nameBox;
@@ -90,7 +90,7 @@ function application() {
     let listNames;
     let inSetInterval;
     let score;
-    let navigator = questionNavigator();
+    let navigator = questionNavigator(questions);
 
     function start() {
         setElementsFromUI();
@@ -320,7 +320,8 @@ function application() {
     }
 
     return {
-        start
+        start,
+        questionNavigator
     }
 }
 
