@@ -4,7 +4,7 @@ function application() {
         let actualQuestionIndex = 0;
 
         function isThereMoreQuestions() {
-            return actualQuestionIndex < questions.length;
+            return actualQuestionIndex < questions.length -1;
         }
 
         function getQuestion() {

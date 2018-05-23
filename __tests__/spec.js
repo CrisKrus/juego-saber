@@ -110,4 +110,20 @@ describe('question navigator', function () {
     it('should get a question', function () {
         expect(navigator.getQuestion()).toBe(questions[0]);
     });
+
+    it('should get next question', function () {
+        expect(navigator.getQuestion()).toBe(questions[0]);
+        navigator.goToNextQuestion();
+        expect(navigator.getQuestion()).toBe(questions[1]);
+    });
+
+    it('does\'t get out of bound', function () {
+        expect(navigator.getQuestion()).toBe(questions[0]);
+        navigator.goToNextQuestion();
+        navigator.goToNextQuestion();
+        navigator.goToNextQuestion();
+        navigator.goToNextQuestion();
+        navigator.goToNextQuestion();
+        expect(navigator.getQuestion()).toBe(questions[2]);
+    });
 });
