@@ -53,14 +53,14 @@ function application() {
 
     let message;
     let timer;
-    let nameBox; //todo make it invisible while the user is playing
+    let nameBox;
     let scoreUI;
     let totalPoints;
     let seconds;
     let actualQuestionSelected;
     let sumPoints;
     let listNames;
-    let found;
+    let question;
     let optionChecked;
     let inSetInterval;
     let score;
@@ -93,18 +93,22 @@ function application() {
 
     function setButtonsListeners() {
         btnSend.addEventListener('click', readUserAnswer);
-        btnSend.addEventListener('click', printQuestionAndAnswers);
+        btnSend.addEventListener('click', function () {
+            printQuestionAndAnswers();
+            goToNextQuestion();
+        });
 
         btnStart.addEventListener('click', onStart);
 
         const btnSave = document.querySelector('.btnSave');
-        btnSave.addEventListener('click', onSave);
+        btnSave.addEventListener('click', onSave); //TODO: disable button while game is playing
     }
 
     function onStart() {
         changeButtonsVisibility();
         actualQuestionSelected = 0;
         printQuestionAndAnswers();
+        goToNextQuestion();
         inSetInterval = setInterval(timerAction, 1000); //El setInterval en una variable par luego utilizarla con el clearInterval
     }
 
@@ -117,7 +121,9 @@ function application() {
     function addEnableSendButtonEventToAnswers() {
         let answers = document.querySelectorAll('.answer');
         for (let answer of answers) {
-            answer.addEventListener('click', () => {enableSendAnswerButton();});
+            answer.addEventListener('click', () => {
+                enableSendAnswerButton();
+            });
         }
     }
 
@@ -126,36 +132,59 @@ function application() {
     }
 
     function printQuestionAndAnswers() {
-        if (actualQuestionSelected < questions.length) {
-            setQuestion();
-            for (let x = 0; x < questions[actualQuestionSelected].answers.length; x++) {
-                addAnswer(x);
-            }
+        if (thereIsMoreQuestions()) {
+            let question = getQuestion();
+            printQuestion(question);
+            printAnswers(question.answers);
             addEnableSendButtonEventToAnswers();
-            actualQuestionSelected++;
         } else {
-            nameBox.classList.toggle('invisible');
-            stopAndResetTimer()
+            gameOver();
         }
-        disableSendAnswerButton();
+        disableSendAnswer();
     }
 
-    function disableSendAnswerButton() {
+    function gameOver() {
+        nameBox.classList.toggle('invisible');
+        stopAndResetTimer()
+    }
+
+    //////////////////////////////////////
+
+    function thereIsMoreQuestions() {
+        return actualQuestionSelected < questions.length;
+    }
+
+    function getQuestion() {
+        return questions[actualQuestionSelected];
+    }
+
+    function goToNextQuestion() {
+        if (thereIsMoreQuestions()) {
+            actualQuestionSelected++;
+        }
+    }
+
+    ////////////////////////////////////////
+
+    function printAnswers(answers) {
+        for (let i = 0; i < answers.length; i++) {
+            printAnswer(answers[i]);
+        }
+    }
+
+    function disableSendAnswer() {
         btnSend.disabled = true;
     }
 
-    function setQuestion() {
-        let questionID = questions[actualQuestionSelected].id;
-        let question = questions[actualQuestionSelected].question;
-        boxQuestions.innerHTML = `<div class="questionBox" id="${questionID}">${question}</div>`;
+    function printQuestion(question) {
+        boxQuestions.innerHTML = `<div class="questionBox" id="${question.id}">${question.question}</div>`;
     }
 
-    function addAnswer(i) {
-        let answer = questions[actualQuestionSelected].answers;
+    function printAnswer(answer) {
         boxQuestions.innerHTML +=
             `<div class="checkboxBox">
-                <input type="radio" id="${answer[i].id}" name="options" class="answer" value="${answer[i].answer}"/>
-                <label for="${answer[i].id}">${answer[i].answer}</label>
+                <input type="radio" id="${answer.id}" name="options" class="answer" value="${answer.answer}"/>
+                <label for="${answer.id}">${answer.answer}</label>
             </div>`;
     }
 
@@ -168,6 +197,7 @@ function application() {
         if (seconds === 20) {
             seconds = 0;
             printQuestionAndAnswers();
+            goToNextQuestion();
             totalPoints -= 3;
             printScoreUI()
         }
@@ -176,15 +206,8 @@ function application() {
     function readUserAnswer() {
         const answers = document.querySelectorAll('.answer');
         getOptionChecked(answers);
-
-        //todo extract that method
-        found = questions.find(function (question) {
-            const questionBox = document.querySelector('.questionBox');
-            if (question.id == questionBox.id) {
-                return question;
-            }
-        });
-        correctIncorrectAnswer(found, optionChecked);
+        question = getQuestion();
+        correctIncorrectAnswer(question, optionChecked);
     }
 
     function getOptionChecked(answers) {
@@ -196,11 +219,11 @@ function application() {
     }
 
     function correctIncorrectAnswer() {
-        if (found.answers[optionChecked.id].isCorrect === true) {
+        if (question.answers[optionChecked.id].isCorrect === true) {
             updateMessage('¡Correcta!');
             updateTotalPointsIfSuccess();
         }
-        else if (found.answers[optionChecked.id].isCorrect !== true) {
+        else if (question.answers[optionChecked.id].isCorrect !== true) {
             updateMessage('¡Incorrecta!');
             updateTotalPointsIfFails();
         }
