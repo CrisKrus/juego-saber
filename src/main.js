@@ -1,6 +1,6 @@
 function application() {
 
-    const questionsWithAnswers = [
+    const questions = [
         {
             id: 1,
             question: "¿Cuál es la capital de Portugal?",
@@ -23,27 +23,27 @@ function application() {
             id: 3,
             question: "¿Cuál es la capital de Zambia?",
             answers: [
-                {id: 0, answer: "Lusaka", isCorrect: true, idQuestion: 4},
-                {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 4},
-                {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 4}
+                {id: 0, answer: "Lusaka", isCorrect: true, idQuestion: 3},
+                {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 3},
+                {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 3}
             ]
         },
         {
             id: 4,
             question: "¿Cuál es la capital de Jordania?",
             answers: [
-                {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 5},
-                {id: 1, answer: "Amán", isCorrect: true, idQuestion: 5},
-                {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 5}
+                {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 4},
+                {id: 1, answer: "Amán", isCorrect: true, idQuestion: 4},
+                {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 4}
             ]
         },
         {
             id: 5,
             question: "¿Cuál es la capital de Panama?",
             answers: [
-                {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 6},
-                {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 6},
-                {id: 2, answer: "Ciudad de Panamá", isCorrect: true, idQuestion: 6}
+                {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 5},
+                {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 5},
+                {id: 2, answer: "Ciudad de Panamá", isCorrect: true, idQuestion: 5}
             ]
         }
     ];
@@ -126,9 +126,9 @@ function application() {
     }
 
     function printQuestionAndAnswers() {
-        if (actualQuestionSelected < questionsWithAnswers.length) {
+        if (actualQuestionSelected < questions.length) {
             setQuestion();
-            for (let x = 0; x < questionsWithAnswers[actualQuestionSelected].answers.length; x++) {
+            for (let x = 0; x < questions[actualQuestionSelected].answers.length; x++) {
                 addAnswer(x);
             }
             addEnableSendButtonEventToAnswers();
@@ -145,13 +145,13 @@ function application() {
     }
 
     function setQuestion() {
-        let questionID = questionsWithAnswers[actualQuestionSelected].id;
-        let question = questionsWithAnswers[actualQuestionSelected].question;
+        let questionID = questions[actualQuestionSelected].id;
+        let question = questions[actualQuestionSelected].question;
         boxQuestions.innerHTML = `<div class="questionBox" id="${questionID}">${question}</div>`;
     }
 
     function addAnswer(i) {
-        let answer = questionsWithAnswers[actualQuestionSelected].answers;
+        let answer = questions[actualQuestionSelected].answers;
         boxQuestions.innerHTML +=
             `<div class="checkboxBox">
                 <input type="radio" id="${answer[i].id}" name="options" class="answer" value="${answer[i].answer}"/>
@@ -178,7 +178,7 @@ function application() {
         getOptionChecked(answers);
 
         //todo extract that method
-        found = questionsWithAnswers.find(function (question) {
+        found = questions.find(function (question) {
             const questionBox = document.querySelector('.questionBox');
             if (question.id == questionBox.id) {
                 return question;

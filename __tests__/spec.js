@@ -56,7 +56,7 @@ describe("the test", function () {
 
     function expectQuestionAndAnswersToBeDifferentFromPreciousOne(question) {
         let newQuestion = document.getElementById('question').textContent;
-        expect(question).not.toEqual(newQuestion);
+        expect(question).not.toEqual(newQuestion);//TODO: should check only the question not the answers too
     }
 
     it('should start the game, answer a question and change the question', function () {
