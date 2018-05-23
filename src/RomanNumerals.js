@@ -1,9 +1,20 @@
+let numerals = [
+    {value: 4, numeral: 'IV'},
+    {value: 1, numeral: 'I'}
+];
+
 function RomanNumerals() {
     function fromNumber(number) {
-        return number === 4 && 'IV'
-            || number === 3 && 'III'
-            || number === 2 && 'II'
-            || 'I';
+        let result = '';
+
+        numerals.forEach(function (item) {
+            while (number >= item.value) {
+                result += item.numeral;
+                number -= item.value;
+            }
+
+        });
+        return result;
     }
 
     return {
