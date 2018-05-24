@@ -19,10 +19,9 @@ saberganar.game = function (questionNavigator) {
 
     function UI() {
 
-        const boxQuestions = document.querySelector('.questions');
-        const btnSend = document.querySelector('.btn');
-        const btnStart = document.querySelector('.btnStart'); //todo disable button when game start
-
+        let boxQuestions = document.getElementById('question');
+        let btnSend = document.getElementById('submit-answer');
+        let btnStart = document.getElementById('start-button'); //todo disable button when game start
         let message = document.getElementById('message');
         let timer   = document.getElementById('seconds');
         let nameBox = document.getElementById('nameBox');
