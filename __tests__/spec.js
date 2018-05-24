@@ -1,6 +1,7 @@
 const chai = require('chai');
 const pug = require('pug');
-const application = require('../src/main');
+const saberganarGame = require('../src/main');
+const saberganarQuestionNavigator = require('../src/questionNavigator');
 // const expect = chai.expect();
 
 describe("the game", function () {
@@ -8,7 +9,8 @@ describe("the game", function () {
 
     beforeEach(function () {
         document.body.innerHTML = pug.compileFile('./views/main.pug', null)();
-        app = application();
+        app = saberganarGame.game(saberganarQuestionNavigator.questionNavigator);
+        // app.setServerData(questions);
         app.start();
     });
 
@@ -27,38 +29,6 @@ describe("the game", function () {
         expectScoreToBeDifferentFromTheBeginning();
     });
 
-
-    function startGame() {
-        let startButton = document.getElementById('start-button');
-        startButton.click();
-    }
-
-    function selectAnswer() {
-        let answer = document.getElementById('0');
-        answer.click();
-        expect(answer.checked).toBeTruthy();
-    }
-
-    function expectToBeAbleToSendTheAnswer(submitAnswerButton) {
-        expect(submitAnswerButton.disabled).toBeFalsy();
-    }
-
-    function submitAnswer() {
-        let submitAnswerButton = document.getElementById('submit-answer');
-        expectToBeAbleToSendTheAnswer(submitAnswerButton);
-        submitAnswerButton.click();
-    }
-
-    function expectScoreToBeDifferentFromTheBeginning() {
-        let score = document.getElementById('scoreUI');
-        expect(score.innerHTML).not.toBe('0 puntos');
-    }
-
-    function expectQuestionAndAnswersToBeDifferentFromPreciousOne(question) {
-        let newQuestion = document.getElementById('question').textContent;
-        expect(question).not.toEqual(newQuestion);//TODO: should check only the question not the answers too
-    }
-
     it('should start the game, answer a question and change the question', function () {
         startGame();
 
@@ -69,11 +39,43 @@ describe("the game", function () {
         expectQuestionAndAnswersToBeDifferentFromPreciousOne(question);
     });
 
+    function startGame() {
+        let startButton = document.getElementById('start-button');
+        startButton.click();
+
+    }
+    function selectAnswer() {
+        let answer = document.getElementById('0');
+        answer.click();
+        expect(answer.checked).toBeTruthy();
+
+    }
+    function expectToBeAbleToSendTheAnswer(submitAnswerButton) {
+        expect(submitAnswerButton.disabled).toBeFalsy();
+
+    }
+    function submitAnswer() {
+        let submitAnswerButton = document.getElementById('submit-answer');
+        expectToBeAbleToSendTheAnswer(submitAnswerButton);
+        submitAnswerButton.click();
+
+    }
+    function expectScoreToBeDifferentFromTheBeginning() {
+        let score = document.getElementById('scoreUI');
+        expect(score.innerHTML).not.toBe('0 puntos');
+
+    }
+    function expectQuestionAndAnswersToBeDifferentFromPreciousOne(question) {
+        let newQuestion = document.getElementById('question').textContent;
+        expect(question).not.toEqual(newQuestion);//TODO: should check only the question not the answers too
+
+    }
+
 });
 
 describe('question navigator', function () {
-    let questions;
-    let navigator;
+    let questions,
+        navigator;
 
     beforeEach(function () {
         questions = [
@@ -104,7 +106,7 @@ describe('question navigator', function () {
                 ]
             }
         ];
-        navigator = application().questionNavigator(questions);
+        navigator = saberganarQuestionNavigator.questionNavigator(questions);
     });
 
     it('should get a question', function () {
