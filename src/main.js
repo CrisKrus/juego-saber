@@ -311,7 +311,6 @@ saberganar.game = function (questionNavigator) {
     }
 };
 
-
 if (isNodeAvailable()) {
     module.exports = saberganar;
 }

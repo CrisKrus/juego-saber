@@ -1,14 +1,14 @@
 var saberganar = saberganar || {};
 
-saberganar.questionNavigator = function(questions) {
+saberganar.questionNavigator = function (questions) {
     let actualQuestionIndex = 0;
 
     function isThereMoreQuestions() {
-        return actualQuestionIndex < questions.length -1;
+        return actualQuestionIndex < questions.length - 1;
     }
 
     function getQuestion() {
-        if (isThereMoreQuestions()){
+        if (isThereMoreQuestions()) {
             return questions[actualQuestionIndex];
         }
         return questions[questions.length - 1];
@@ -28,10 +28,9 @@ saberganar.questionNavigator = function(questions) {
         isThereMoreQuestions,
         goToNextQuestion,
         getQuestion,
-        resetQuestions
+        resetQuestions,
     }
 };
-
 
 if (isNodeAvailable()) {
     module.exports = saberganar;
