@@ -153,7 +153,8 @@ saberganar.game = function (questionNavigator) {
 
     function gameOver() {
         nameBox.classList.toggle('invisible');
-        stopAndResetTimer()
+        stopAndResetTimer();
+        //TODO: hide questions and options
     }
 
     function printAnswers(answers) {

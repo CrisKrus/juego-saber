@@ -8,7 +8,10 @@ saberganar.questionNavigator = function(questions) {
     }
 
     function getQuestion() {
-        return questions[actualQuestionIndex];
+        if (isThereMoreQuestions()){
+            return questions[actualQuestionIndex];
+        }
+        return questions[questions.length - 1];
     }
 
     function goToNextQuestion() {
