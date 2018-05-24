@@ -3,6 +3,7 @@ var saberganar = saberganar || {};
 saberganar.questionNavigator = function (questions) {
     let actualQuestionIndex = 0;
 
+    // TODO: always have more questions because don't increment the last one
     function isThereMoreQuestions() {
         return actualQuestionIndex < questions.length - 1;
     }
