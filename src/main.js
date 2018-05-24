@@ -17,8 +17,6 @@ saberganar.game = function (questionNavigator) {
         UI().setButtonsListeners();
     }
 
-    ////////////////////UI/////////////////////////////////
-
     function UI() {
 
         const boxQuestions = document.querySelector('.questions');
@@ -100,6 +98,10 @@ saberganar.game = function (questionNavigator) {
             scoreList.innerHTML = newScoreList;
         }
 
+        function printTimer(time) {
+            timer.innerHTML = `${time}`;
+        }
+
         function updateMessage(messageText) {
             message.innerHTML = `<h3>${messageText}</h3>`;
         }
@@ -118,6 +120,9 @@ saberganar.game = function (questionNavigator) {
             btnStart.classList.toggle('invisible');
         }
 
+        function toggleInvisibleNameBox() {
+            nameBox.classList.toggle('invisible');
+        }
 
         function cleanButtonsAndBoxes() {
             btnStart.classList.toggle('invisible');
@@ -164,12 +169,11 @@ saberganar.game = function (questionNavigator) {
             printScoreUI,
             changeButtonsVisibility,
             printQuestionAndAnswers,
-            timer,
-            nameBox,
-            btnSend
+            toggleInvisibleNameBox,
+            disableSendAnswer,
+            printTimer
         }
     }
-    ////////////////////////////////////////////////////
 
     function correctIncorrectAnswer(answers, optionChecked) {
         if (answers[optionChecked.id].isCorrect === true) {
@@ -193,7 +197,7 @@ saberganar.game = function (questionNavigator) {
             points:
                 []
         };
-        UI().btnSend.disabled = true;
+        UI().disableSendAnswer();
         getQuestions(function (data) {
             questions = data;
             theQuestionNavigator = questionNavigator(questions);
@@ -259,7 +263,7 @@ saberganar.game = function (questionNavigator) {
     }
 
     function gameOver() {
-        UI().nameBox.classList.toggle('invisible');
+        UI().toggleInvisibleNameBox();
         stopAndResetTimer();
         //TODO: hide questions and options
     }
@@ -269,7 +273,7 @@ saberganar.game = function (questionNavigator) {
 
     function timerAction() {
         seconds++;
-        UI().timer.innerHTML = `${seconds}`;//todo extract this
+        UI().printTimer(seconds);
         if (seconds === 20) {
             seconds = 0;
             theQuestionNavigator.goToNextQuestion();
@@ -311,7 +315,7 @@ saberganar.game = function (questionNavigator) {
     function stopAndResetTimer() {
         seconds = 0;
         clearInterval(inSetInterval);
-        UI().timer.innerHTML = '';
+        UI().printTimer('');
     }
 
     return {
