@@ -77,27 +77,32 @@ describe("the game", function () {
         startButton.click();
 
     }
+
     function selectAnswer() {
         let answer = document.getElementById('0');
         answer.click();
         expect(answer.checked).toBeTruthy();
 
     }
+
     function expectToBeAbleToSendTheAnswer(submitAnswerButton) {
         expect(submitAnswerButton.disabled).toBeFalsy();
 
     }
+
     function submitAnswer() {
         let submitAnswerButton = document.getElementById('submit-answer');
         expectToBeAbleToSendTheAnswer(submitAnswerButton);
         submitAnswerButton.click();
 
     }
+
     function expectScoreToBeDifferentFromTheBeginning() {
         let score = document.getElementById('scoreUI');
         expect(score.innerHTML).not.toBe('0 puntos');
 
     }
+
     function expectQuestionAndAnswersToBeDifferentFromPreciousOne(question) {
         let newQuestion = document.getElementById('question').textContent;
         expect(question).not.toEqual(newQuestion);//TODO: should check only the question not the answers too
