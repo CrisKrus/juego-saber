@@ -47,6 +47,17 @@ describe("the game", function () {
         ];
     }
 
+    it('should start a game and the score be empty', function () {
+        startGame();
+
+        expectScoreToBeEmpty();
+    });
+
+    function expectScoreToBeEmpty() {
+        let score = document.getElementById('scoreUI');
+        expect(score.innerHTML).toBe('');
+    }
+
     it('should answer the correct question and the score be bigger than before', function () {
         startGame();
 
@@ -61,26 +72,29 @@ describe("the game", function () {
         startButton.click();
 
     }
+
     function selectCorrectAnswer() {
         let answer = document.getElementById('2');
         answer.click();
         expect(answer.checked).toBeTruthy();
 
     }
+
     function expectToBeAbleToSendTheAnswer(submitAnswerButton) {
         expect(submitAnswerButton.disabled).toBeFalsy();
 
     }
+
     function submitAnswer() {
         let submitAnswerButton = document.getElementById('submit-answer');
         expectToBeAbleToSendTheAnswer(submitAnswerButton);
         submitAnswerButton.click();
 
     }
+
     function expectScoreToBeBiggerFromTheBeginning() {
         let score = document.getElementById('scoreUI');
         expect(score.innerHTML).toBe(' 2 puntos');
     }
-
 });
 
