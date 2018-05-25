@@ -47,6 +47,7 @@ describe("the game", function () {
         ];
     }
 
+
     it('should start a game and the score be empty', function () {
         startGame();
 
@@ -57,6 +58,28 @@ describe("the game", function () {
         let score = document.getElementById('scoreUI');
         expect(score.innerHTML).toBe('');
     }
+
+
+    it('should answer the correct option and the score be bigger than before', function () {
+        startGame();
+
+        selectCorrectAnswer();
+        submitAnswer();
+
+        expectScoreToBeBiggerFromTheBeginning();
+    });
+
+    function selectCorrectAnswer() {
+        let answer = document.getElementById('2');
+        answer.click();
+        expect(answer.checked).toBeTruthy();
+    }
+
+    function expectScoreToBeBiggerFromTheBeginning() {
+        let score = document.getElementById('scoreUI');
+        expect(score.innerHTML).toBe(' 2 puntos');
+    }
+
 
     it('should answer the incorrect option and the score be lower than before', function () {
         startGame();
@@ -79,26 +102,6 @@ describe("the game", function () {
         let score = document.getElementById('scoreUI');
         expect(score.innerHTML).toBe(' -1 puntos');
 
-    }
-
-    it('should answer the correct option and the score be bigger than before', function () {
-        startGame();
-
-        selectCorrectAnswer();
-        submitAnswer();
-
-        expectScoreToBeBiggerFromTheBeginning();
-    });
-
-    function selectCorrectAnswer() {
-        let answer = document.getElementById('2');
-        answer.click();
-        expect(answer.checked).toBeTruthy();
-    }
-
-    function expectScoreToBeBiggerFromTheBeginning() {
-        let score = document.getElementById('scoreUI');
-        expect(score.innerHTML).toBe(' 2 puntos');
     }
 
 
