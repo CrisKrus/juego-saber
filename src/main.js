@@ -17,15 +17,101 @@ saberganar.game = function (questionNavigator) {
         UI().setButtonsListeners();
     }
 
+    function initializeApplicationVariables() {
+        totalPoints = 0;
+        seconds = 0;
+        score = { //Se guardan los nombres y las puntuaciones de cada jugador
+            names:
+                [],
+            points:
+                []
+        };
+        UI().disableSendAnswer();
+        getQuestions(function (data) {
+            questions = data;
+            theQuestionNavigator = questionNavigator(questions);
+        });
+    }
+
+    function getQuestions(callback) {
+        serverData = serverData || [
+            {
+                id: 1,
+                question: "¿Cuál es la capital de Portugal?",
+                answers: [
+                    {id: 0, answer: "Faro", isCorrect: false, idQuestion: 1},
+                    {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 1},
+                    {id: 2, answer: "Lisboa", isCorrect: true, idQuestion: 1}
+                ]
+            },
+            {
+                id: 2,
+                question: "¿Cuál es la capital de Egipto?",
+                answers: [
+                    {id: 0, answer: "Faro", isCorrect: false, idQuestion: 2},
+                    {id: 1, answer: "El Cairo", isCorrect: true, idQuestion: 2},
+                    {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 2}
+                ]
+            },
+            {
+                id: 3,
+                question: "¿Cuál es la capital de Zambia?",
+                answers: [
+                    {id: 0, answer: "Lusaka", isCorrect: true, idQuestion: 3},
+                    {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 3},
+                    {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 3}
+                ]
+            },
+            {
+                id: 4,
+                question: "¿Cuál es la capital de Jordania?",
+                answers: [
+                    {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 4},
+                    {id: 1, answer: "Amán", isCorrect: true, idQuestion: 4},
+                    {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 4}
+                ]
+            },
+            {
+                id: 5,
+                question: "¿Cuál es la capital de Panama?",
+                answers: [
+                    {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 5},
+                    {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 5},
+                    {id: 2, answer: "Ciudad de Panamá", isCorrect: true, idQuestion: 5}
+                ]
+            }
+        ];
+        callback(serverData);
+    }
+
+    ///////////////GAME////////////
+    function resetTimeAndPoints() {
+        totalPoints = 0;
+        UI().printScoreUI();
+        stopAndResetTimer();
+    }
+
+    function savePoints() {
+        score.points.push(totalPoints);
+        sumPoints = score.points;
+    }
+
+    function saveUser() {
+        saveName();
+        savePoints();
+    }
+
+    function saveName() {
+        let name = document.querySelector('#inputNameId').value;
+        score.names.push(name);
+        listNames = score.names;
+    }
+
     function UI() {
 
         let boxQuestions = document.getElementById('question');
         let btnSend = document.getElementById('submit-answer');
         let btnStart = document.getElementById('start-button'); //todo disable button when game start
-        let message = document.getElementById('message');
-        let timer   = document.getElementById('seconds');
-        let nameBox = document.getElementById('nameBox');
-        let scoreUI = document.getElementById('scoreUI');
 
         function setButtonsListeners() {
             btnSend.addEventListener('click', readUserAnswer);
@@ -40,19 +126,45 @@ saberganar.game = function (questionNavigator) {
             btnSave.addEventListener('click', onSave); //TODO: disable button while game is playing
         }
 
+        function onStart() {
+            changeButtonsVisibility();
+            theQuestionNavigator.resetQuestions();
+            printQuestionAndAnswers();
+            inSetInterval = setInterval(timerAction, 1000); //El setInterval en una variable par luego utilizarla con el clearInterval
+        }
+
         function onSave() {
-            saveName();
-            savePoints();
+            saveUser();
             printPointsAndName(listNames, sumPoints);
             resetTimeAndPoints();
             cleanButtonsAndBoxes();
         }
 
-        function saveName() {
-            let name = document.querySelector('#inputNameId').value;
-            score.names.push(name);
-            listNames = score.names;
+        function readUserAnswer() {
+            const answers = document.querySelectorAll('.answer');
+            let optionChecked = getOptionChecked(answers);
+            correctIncorrectAnswer(theQuestionNavigator.getQuestion().answers, optionChecked);
         }
+
+        function correctIncorrectAnswer(answers, optionChecked) {
+            if (answers[optionChecked.id].isCorrect === true) {
+                UI().updateMessage('¡Correcta!');
+                updateTotalPointsIfSuccess();
+            }
+            else if (answers[optionChecked.id].isCorrect !== true) {
+                UI().updateMessage('¡Incorrecta!');
+                updateTotalPointsIfFails();
+            }
+            UI().printScoreUI();
+            seconds = 0;
+        }
+
+        ////////////////////////////////////////////
+
+        let message = document.getElementById('message');
+        let timer = document.getElementById('seconds');
+        let nameBox = document.getElementById('nameBox');
+        let scoreUI = document.getElementById('scoreUI');
 
         function printScoreUI() {
             scoreUI.innerHTML = ` ${totalPoints} puntos`
@@ -148,12 +260,6 @@ saberganar.game = function (questionNavigator) {
             btnSend.disabled = true;
         }
 
-        function readUserAnswer() {
-            const answers = document.querySelectorAll('.answer');
-            let optionChecked = getOptionChecked(answers);
-            correctIncorrectAnswer(theQuestionNavigator.getQuestion().answers, optionChecked);
-        }
-
         function getOptionChecked(answers) {
             for (let i = 0; i < answers.length; i++) {
                 if (answers[i].checked) {
@@ -166,99 +272,11 @@ saberganar.game = function (questionNavigator) {
             setButtonsListeners,
             updateMessage,
             printScoreUI,
-            changeButtonsVisibility,
             printQuestionAndAnswers,
             toggleInvisibleNameBox,
             disableSendAnswer,
             printTimer
         }
-    }
-
-    function correctIncorrectAnswer(answers, optionChecked) {
-        if (answers[optionChecked.id].isCorrect === true) {
-            UI().updateMessage('¡Correcta!');
-            updateTotalPointsIfSuccess();
-        }
-        else if (answers[optionChecked.id].isCorrect !== true) {
-            UI().updateMessage('¡Incorrecta!');
-            updateTotalPointsIfFails();
-        }
-        UI().printScoreUI();
-        seconds = 0;
-    }
-
-    function initializeApplicationVariables() {
-        totalPoints = 0;
-        seconds = 0;
-        score = { //Se guardan los nombres y las puntuaciones de cada jugador
-            names:
-                [],
-            points:
-                []
-        };
-        UI().disableSendAnswer();
-        getQuestions(function (data) {
-            questions = data;
-            theQuestionNavigator = questionNavigator(questions);
-        });
-    }
-
-    function getQuestions(callback) {
-        serverData = serverData || [
-            {
-                id: 1,
-                question: "¿Cuál es la capital de Portugal?",
-                answers: [
-                    {id: 0, answer: "Faro", isCorrect: false, idQuestion: 1},
-                    {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 1},
-                    {id: 2, answer: "Lisboa", isCorrect: true, idQuestion: 1}
-                ]
-            },
-            {
-                id: 2,
-                question: "¿Cuál es la capital de Egipto?",
-                answers: [
-                    {id: 0, answer: "Faro", isCorrect: false, idQuestion: 2},
-                    {id: 1, answer: "El Cairo", isCorrect: true, idQuestion: 2},
-                    {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 2}
-                ]
-            },
-            {
-                id: 3,
-                question: "¿Cuál es la capital de Zambia?",
-                answers: [
-                    {id: 0, answer: "Lusaka", isCorrect: true, idQuestion: 3},
-                    {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 3},
-                    {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 3}
-                ]
-            },
-            {
-                id: 4,
-                question: "¿Cuál es la capital de Jordania?",
-                answers: [
-                    {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 4},
-                    {id: 1, answer: "Amán", isCorrect: true, idQuestion: 4},
-                    {id: 2, answer: "Lisboa", isCorrect: false, idQuestion: 4}
-                ]
-            },
-            {
-                id: 5,
-                question: "¿Cuál es la capital de Panama?",
-                answers: [
-                    {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 5},
-                    {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 5},
-                    {id: 2, answer: "Ciudad de Panamá", isCorrect: true, idQuestion: 5}
-                ]
-            }
-        ];
-        callback(serverData);
-    }
-
-    function onStart() {
-        UI().changeButtonsVisibility();
-        theQuestionNavigator.resetQuestions();
-        UI().printQuestionAndAnswers();
-        inSetInterval = setInterval(timerAction, 1000); //El setInterval en una variable par luego utilizarla con el clearInterval
     }
 
     function gameOver() {
@@ -267,18 +285,15 @@ saberganar.game = function (questionNavigator) {
         //TODO: hide questions and options
     }
 
-//Set interval con la función startTimer para que cada segundo compruebe que los segundos no han llegado a 20.
-//Si llega a 20 ejecuta la función de pintar las preguntas, es decir, pasa a la siguiente y resta 3 puntos.
-
     function timerAction() {
         seconds++;
         UI().printTimer(seconds);
-        if (seconds === 20) {
+        if (seconds === 20) {//todo put timer on 20
             seconds = 0;
             theQuestionNavigator.goToNextQuestion();
-            UI().printQuestionAndAnswers();
             totalPoints -= 3;
-            UI().printScoreUI()
+            UI().printQuestionAndAnswers();
+            UI().printScoreUI();
         }
     }
 
@@ -298,17 +313,6 @@ saberganar.game = function (questionNavigator) {
         else if (seconds >= 3 && seconds <= 10) {
             totalPoints += 1;
         }
-    }
-
-    function savePoints() {
-        score.points.push(totalPoints);
-        sumPoints = score.points;
-    }
-
-    function resetTimeAndPoints() {
-        totalPoints = 0;
-        UI().printScoreUI();
-        stopAndResetTimer();
     }
 
     function stopAndResetTimer() {
