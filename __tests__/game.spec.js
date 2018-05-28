@@ -1,8 +1,6 @@
 const pug = require('pug');
 const saberganarGame = require('../src/main');
 const saberganarQuestionNavigator = require('../src/questionNavigator');
-// const chai = require('chai');
-// const expect = chai.expect();
 
 describe("the game", function () {
     let app,
