@@ -30,7 +30,7 @@ saberganar.questionNavigator = function (questions) {
         goToNextQuestion,
         getQuestion,
         resetQuestions,
-    }
+    };
 };
 
 if (isNodeAvailable()) {

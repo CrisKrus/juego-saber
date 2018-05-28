@@ -1,10 +1,12 @@
 const pug = require('pug');
 const saberganarGame = require('../src/main');
 const saberganarQuestionNavigator = require('../src/questionNavigator');
+const saberganerPageObject = require('../src/page');
 
 describe("points from UI", function () {
     let app,
-        questions;
+        questions,
+        pageObject;
 
     beforeEach(function () {
         document.body.innerHTML = pug.compileFile('./views/main.pug', null)();
@@ -12,6 +14,7 @@ describe("points from UI", function () {
         setQuestions();
         app.setServerData(questions);
         app = app.start();
+        pageObject = saberganerPageObject.pageObject();
     });
 
     function setQuestions() {
@@ -45,9 +48,8 @@ describe("points from UI", function () {
         ];
     }
 
-
     it('should start a game and the score be empty', function () {
-        startGame();
+        pageObject.startGame();
 
         expectScoreToBeEmpty();
     });
@@ -57,53 +59,46 @@ describe("points from UI", function () {
         expect(score.innerHTML).toBe('');
     }
 
-
     it('should answer the correct option and the score be bigger than before', function () {
-        startGame();
+        pageObject.startGame();
 
-        selectCorrectAnswer();
-        submitAnswer();
+        selectCorrectOption();
+        pageObject.submitAnswer();
 
         expectScoreToBeBiggerFromTheBeginning();
     });
 
-    function selectCorrectAnswer() {
-        let answer = document.getElementById('2');
-        answer.click();
-        expect(answer.checked).toBeTruthy();
+    function selectCorrectOption() {
+        pageObject.selectOption(2);
     }
 
     function expectScoreToBeBiggerFromTheBeginning() {
-        let score = document.getElementById('scoreUI');
+        let score = pageObject.getActualScoreElement();
         expect(score.innerHTML).toBe(' 2 puntos');
     }
 
-
     it('should answer the incorrect option and the score be lower than before', function () {
-        startGame();
+        pageObject.startGame();
 
         selectIncorrectAnswer();
-        submitAnswer();
+        pageObject.submitAnswer();
 
         expectScoreToBeLowerFromTheBeginning();
     });
 
     function selectIncorrectAnswer() {
-        let answer = document.getElementById('0');
-        answer.click();
-        expect(answer.checked).toBeTruthy();
+        pageObject.selectOption(0);
     }
 
     function expectScoreToBeLowerFromTheBeginning() {
-        let score = document.getElementById('scoreUI');
+        let score = pageObject.getActualScoreElement();
         expect(score.innerHTML).toBe(' -1 puntos');
     }
 
-
     xit('should wait more than 20 seconds and the score be 3 points less than before', function (done) {
-        startGame();
+        pageObject.startGame();
 
-        let score = document.getElementById('scoreUI');
+        let score = pageObject.getActualScoreElement();
         //TODO jest has 5 seconds timeout
         setTimeout(expectScoreToBeThreePointLessFromTheBeginning, 20000);
 
@@ -112,22 +107,5 @@ describe("points from UI", function () {
             done();
         }
     });
-
-    function startGame() {
-        let startButton = document.getElementById('start-button');
-        startButton.click();
-
-    }
-
-    function submitAnswer() {
-        let submitAnswerButton = document.getElementById('submit-answer');
-        expectToBeAbleToSendTheAnswer(submitAnswerButton);
-        submitAnswerButton.click();
-
-    }
-
-    function expectToBeAbleToSendTheAnswer(submitAnswerButton) {
-        expect(submitAnswerButton.disabled).toBeFalsy();
-    }
 });
 

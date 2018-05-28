@@ -1,10 +1,12 @@
 const pug = require('pug');
 const saberganarGame = require('../src/main');
 const saberganarQuestionNavigator = require('../src/questionNavigator');
+const saberganarPageObject = require('../src/page');
 
 describe("the game", function () {
     let app,
-        questions;
+        questions,
+        pageObject;
 
     beforeEach(function () {
         document.body.innerHTML = pug.compileFile('./views/main.pug', null)();
@@ -12,6 +14,8 @@ describe("the game", function () {
         setQuestions();
         app.setServerData(questions);
         app = app.start();
+        pageObject = saberganarPageObject.pageObject();
+
     });
 
     function setQuestions() {
@@ -52,57 +56,33 @@ describe("the game", function () {
     });
 
     it('should start the game, answer a question and change the score', function () {
-        startGame();
+        pageObject.startGame();
 
-        selectOption(0);
-        submitAnswer();
+        pageObject.selectOption(0);
+
+        pageObject.submitAnswer();
 
         expectScoreToBeDifferentFromTheBeginning();
     });
 
     it('should start the game, answer a question and change the question', function () {
-        startGame();
+        pageObject.startGame();
 
-        let question = document.getElementById('question').textContent;
-        selectOption(0);
-        submitAnswer();
+        let question = pageObject.getQuestionText();
+        pageObject.selectOption(0);
+        pageObject.submitAnswer();
 
         expectQuestionAndAnswersToBeDifferentFromPreciousOne(question);
     });
 
-    function startGame() {
-        let startButton = document.getElementById('start-button');
-        startButton.click();
-
-    }
-
-    function selectOption(optionId) {
-        let answer = document.getElementById(optionId);
-        answer.click();
-        expect(answer.checked).toBeTruthy();
-
-    }
-
-    function expectToBeAbleToSendTheAnswer(submitAnswerButton) {
-        expect(submitAnswerButton.disabled).toBeFalsy();
-
-    }
-
-    function submitAnswer() {
-        let submitAnswerButton = document.getElementById('submit-answer');
-        expectToBeAbleToSendTheAnswer(submitAnswerButton);
-        submitAnswerButton.click();
-
-    }
-
     function expectScoreToBeDifferentFromTheBeginning() {
-        let score = document.getElementById('scoreUI');
+        let score = pageObject.getActualScoreElement();
         expect(score.innerHTML).not.toBe('0 puntos');
 
     }
 
     function expectQuestionAndAnswersToBeDifferentFromPreciousOne(question) {
-        let newQuestion = document.getElementById('question').textContent;
+        let newQuestion = pageObject.getQuestionText();
         expect(question).not.toEqual(newQuestion);
 
     }
