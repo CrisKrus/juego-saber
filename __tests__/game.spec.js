@@ -54,7 +54,7 @@ describe("the game", function () {
     it('should start the game, answer a question and change the score', function () {
         startGame();
 
-        selectAnswer();
+        selectOption(0);
         submitAnswer();
 
         expectScoreToBeDifferentFromTheBeginning();
@@ -64,7 +64,7 @@ describe("the game", function () {
         startGame();
 
         let question = document.getElementById('question').textContent;
-        selectAnswer();
+        selectOption(0);
         submitAnswer();
 
         expectQuestionAndAnswersToBeDifferentFromPreciousOne(question);
@@ -76,8 +76,8 @@ describe("the game", function () {
 
     }
 
-    function selectAnswer() {
-        let answer = document.getElementById('0');
+    function selectOption(optionId) {
+        let answer = document.getElementById(optionId);
         answer.click();
         expect(answer.checked).toBeTruthy();
 
