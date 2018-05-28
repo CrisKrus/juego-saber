@@ -3,17 +3,36 @@ const saberganarGame = require('../src/main');
 const saberganarQuestionNavigator = require('../src/questionNavigator');
 
 describe("score board", function () {
-    let app;
+    let app,
+        players;
 
     beforeEach(function () {
         document.body.innerHTML = pug.compileFile('./views/main.pug', null)();
         app = saberganarGame.game(saberganarQuestionNavigator.questionNavigator);
         app = app.start();
+
+        setPlayers();
     });
 
-    function addInputName() {
+    function setPlayers() {
+        players = ['Pepe', 'Antonio', 'Anastasio'];
+    }
+
+    it('should be empty the scoreBoard at the beginning', function () {
+        let playerScores = document.getElementById('playerScores').textContent;
+        expect(playerScores).toBe('\n    ');
+    });
+
+
+    it('should save a score before start the game', function () {
+        addPlayerName(players[0]);
+        saveScore();
+        expectScoreToContainsPlayer(players[0]);
+    });
+
+    function addPlayerName(player) {
         let inputName = document.getElementById('inputNameId');
-        inputName.value = 'Pepe';
+        inputName.value = player;
     }
 
     function saveScore() {
@@ -21,14 +40,12 @@ describe("score board", function () {
         saveScore.click();
     }
 
-    function expectScoreToContainsInputName() {
+    function expectScoreToContainsPlayer(player) {
         let playerScores = document.getElementById('playerScores').textContent;
-        expect(playerScores).toContain('Pepe');
+        expect(playerScores).toContain(player);
     }
 
-    it('should save a score before start the game', function () {
-        addInputName();
-        saveScore();
-        expectScoreToContainsInputName();
+    it('should save multiple scores', function () {
+
     });
 });
