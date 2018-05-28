@@ -16,14 +16,6 @@ describe("score board", function () {
 
         setPlayers();
     });
-    beforeEach(function () {
-        document.body.innerHTML = pug.compileFile('./views/main.pug', null)();
-        app = saberganarGame.game(saberganarQuestionNavigator.questionNavigator);
-        app = app.start();
-        pageObject = saberganarPageObject.pageObject();
-
-        setPlayers();
-    });
 
     function setPlayers() {
         players = ['Pepe', 'Antonio', 'Anastasio'];
