@@ -111,7 +111,7 @@ saberganar.game = function (questionNavigator) {
 
         let boxQuestions = document.getElementById('question');
         let btnSend = document.getElementById('submit-answer');
-        let btnStart = document.getElementById('start-button'); //todo disable button when game start
+        let btnStart = document.getElementById('start-button');
 
         function setButtonsListeners() {
             btnSend.addEventListener('click', readUserAnswer);
@@ -123,7 +123,7 @@ saberganar.game = function (questionNavigator) {
             btnStart.addEventListener('click', onStart);
 
             const btnSave = document.querySelector('.btnSave');
-            btnSave.addEventListener('click', onSave); //TODO: disable button while game is playing
+            btnSave.addEventListener('click', onSave);
         }
 
         function onStart() {
@@ -282,13 +282,12 @@ saberganar.game = function (questionNavigator) {
     function gameOver() {
         UI().toggleInvisibleNameBox();
         stopAndResetTimer();
-        //TODO: hide questions and options
     }
 
     function timerAction() {
         seconds++;
         UI().printTimer(seconds);
-        if (seconds === 20) {//todo put timer on 20
+        if (seconds === 20) {
             seconds = 0;
             theQuestionNavigator.goToNextQuestion();
             totalPoints -= 3;

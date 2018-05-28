@@ -4,7 +4,7 @@ const saberganarQuestionNavigator = require('../src/questionNavigator');
 // const chai = require('chai');
 // const expect = chai.expect();
 
-describe("the game", function () {
+describe("points from UI", function () {
     let app,
         questions;
 
@@ -92,18 +92,28 @@ describe("the game", function () {
 
     function selectIncorrectAnswer() {
         let answer = document.getElementById('0');
-        console.log(answer.innerText);
         answer.click();
         expect(answer.checked).toBeTruthy();
-
     }
 
     function expectScoreToBeLowerFromTheBeginning() {
         let score = document.getElementById('scoreUI');
         expect(score.innerHTML).toBe(' -1 puntos');
-
     }
 
+
+    it('should wait more than 20 seconds and the score be 3 points less than before', function (done) {
+        startGame();
+
+        //TODO jest has 5 seconds timeout
+        setTimeout(expectScoreToBeThreePointLessFromTheBeginning, 20000);
+
+        function expectScoreToBeThreePointLessFromTheBeginning() {
+            let score = document.getElementById('scoreUI');
+            expect(score.innerHTML).toBe(' -3 puntos');
+            done();
+        }
+    });
 
     function startGame() {
         let startButton = document.getElementById('start-button');

@@ -105,7 +105,7 @@ describe("the game", function () {
 
     function expectQuestionAndAnswersToBeDifferentFromPreciousOne(question) {
         let newQuestion = document.getElementById('question').textContent;
-        expect(question).not.toEqual(newQuestion);//TODO: should check only the question not the answers too
+        expect(question).not.toEqual(newQuestion);
 
     }
 });
