@@ -23,29 +23,42 @@ describe("score board", function () {
         expect(playerScores).toBe('\n    ');
     });
 
-
     it('should save a score before start the game', function () {
         addPlayerName(players[0]);
         saveScore();
         expectScoreToContainsPlayer(players[0]);
     });
 
+    it('should save multiple scores', function () {
+        addPlayerName(players[0]);
+        saveScore();
+
+        addPlayerName(players[1]);
+        saveScore();
+
+        addPlayerName(players[2]);
+        saveScore();
+
+        expectScoreToContainsPlayer(players[0]);
+        expectScoreToContainsPlayer(players[1]);
+        expectScoreToContainsPlayer(players[2]);
+    });
+
     function addPlayerName(player) {
         let inputName = document.getElementById('inputNameId');
         inputName.value = player;
+
     }
 
     function saveScore() {
         let saveScore = document.getElementById('save-score-button');
         saveScore.click();
+
     }
 
     function expectScoreToContainsPlayer(player) {
         let playerScores = document.getElementById('playerScores').textContent;
         expect(playerScores).toContain(player);
+
     }
-
-    it('should save multiple scores', function () {
-
-    });
 });
