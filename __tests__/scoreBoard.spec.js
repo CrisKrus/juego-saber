@@ -1,7 +1,7 @@
 const pug = require('pug');
 const saberganarGame = require('../src/main');
 const saberganarQuestionNavigator = require('../src/questionNavigator');
-const saberganarPageObject = require('../src/page');
+const saberganarPageObject = require('../src/pageObject');
 const saberganarScoreManager = require('../src/scoreManager');
 
 describe("score board", function () {

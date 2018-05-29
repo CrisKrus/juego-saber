@@ -14,13 +14,13 @@ saberganar.game = function (questionNavigator, scoreManager) {
 
     function start() {
         initializeApplicationVariables();
+        page.disableSendAnswer();
         page.setButtonsListeners();
     }
 
     function initializeApplicationVariables() {
-        actualPoints = 0;
-        seconds = 0;
-        page.disableSendAnswer();
+        resetActualScore();
+        resetTimer();
         getQuestions(function (data) {
             questions = data;
             theQuestionNavigator = questionNavigator(questions);
@@ -78,7 +78,6 @@ saberganar.game = function (questionNavigator, scoreManager) {
         callback(serverData);
     }
 
-    ///////////////GAME////////////
     function resetTimeAndPoints() {
         resetActualScore();
         page.printScoreUI(actualPoints);
@@ -86,13 +85,41 @@ saberganar.game = function (questionNavigator, scoreManager) {
         page.printTimer(seconds);
     }
 
+    function saveUser(name, points) {
+        score.saveName(name);
+        score.savePoints(points);
+    }
+
     function resetActualScore() {
         actualPoints = 0;
     }
 
-    function saveUser(name, points) {
-        score.saveName(name);
-        score.savePoints(points);
+    function decrementScore(decrement) {
+        actualPoints -= decrement;
+    }
+
+    function incrementScore(increment) {
+        actualPoints += increment;
+    }
+
+    function areSecondsMoreThan(toCompare) {
+        return seconds > toCompare;
+    }
+
+    function areSecondsLessThan(toCompare) {
+        return seconds < toCompare;
+    }
+
+    function resetTimer() {
+        seconds = 0;
+    }
+
+    function incrementSeconds() {
+        seconds++;
+    }
+
+    function isSecondsEqualTo(toCompare) {
+        return seconds === toCompare;
     }
 
     function UI() {
@@ -144,7 +171,25 @@ saberganar.game = function (questionNavigator, scoreManager) {
                 updateTotalPointsIfFails();
             }
             page.printScoreUI(actualPoints);
-            seconds = 0;
+            resetTimer();
+        }
+
+        function updateTotalPointsIfFails() {
+            if (areSecondsMoreThan(12)) {
+                decrementScore(2);
+            }
+            else if (areSecondsLessThan(11)) {
+                decrementScore(1)
+            }
+        }
+
+        function updateTotalPointsIfSuccess() {
+            if (areSecondsLessThan(3)) {
+                incrementScore(2);
+            }
+            else if (areSecondsLessThan(11)) {
+                incrementScore(1);
+            }
         }
 
         ////////////////////////////////////////////
@@ -277,38 +322,20 @@ saberganar.game = function (questionNavigator, scoreManager) {
     }
 
     function timerAction() {
-        seconds++;
+        incrementSeconds();
         page.printTimer(seconds);
-        if (seconds === 20) {
-            seconds = 0;
+        if (isSecondsEqualTo(20)) {
+            resetTimer();
             theQuestionNavigator.goToNextQuestion();
-            actualPoints -= 3;
+            decrementScore(3);
             page.printQuestionAndAnswers();
             page.printScoreUI(actualPoints);
         }
     }
 
-    function updateTotalPointsIfFails() {
-        if (seconds >= 11) {
-            actualPoints -= 2;
-        }
-        else if (seconds <= 10) {
-            actualPoints -= 1;
-        }
-    }
-
-    function updateTotalPointsIfSuccess() {
-        if (seconds <= 2) {
-            actualPoints += 2;
-        }
-        else if (seconds >= 3 && seconds <= 10) {
-            actualPoints += 1;
-        }
-    }
-
     function stopAndResetTimer() {
         clearInterval(inSetInterval);
-        seconds = 0;
+        resetTimer();
     }
 
     return {
