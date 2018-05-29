@@ -83,11 +83,16 @@ saberganar.game = function (questionNavigator) {
         callback(serverData);
     }
 
-    ///////////////GAME////////////
+///////////////GAME////////////
     function resetTimeAndPoints() {
-        actualPoints = 0;
+        resetActualScore();
         page.printScoreUI(actualPoints);
         stopAndResetTimer();
+        page.printTimer(seconds);
+    }
+
+    function resetActualScore() {
+        actualPoints = 0;
     }
 
     function savePoints(points) {
@@ -281,6 +286,7 @@ saberganar.game = function (questionNavigator) {
     function gameOver() {
         page.toggleInvisibleNameBox();
         stopAndResetTimer();
+        page.printTimer(seconds);
     }
 
     function timerAction() {
@@ -314,9 +320,8 @@ saberganar.game = function (questionNavigator) {
     }
 
     function stopAndResetTimer() {
-        seconds = 0;
         clearInterval(inSetInterval);
-        page.printTimer('');
+        seconds = 0;
     }
 
     return {
