@@ -2,6 +2,7 @@ const pug = require('pug');
 const saberganarGame = require('../src/main');
 const saberganarQuestionNavigator = require('../src/questionNavigator');
 const saberganarPageObject = require('../src/page');
+const saberganarScoreManager = require('../src/scoreManager');
 
 describe("score board", function () {
     let app,
@@ -10,7 +11,9 @@ describe("score board", function () {
 
     beforeEach(function () {
         document.body.innerHTML = pug.compileFile('./views/main.pug', null)();
-        app = saberganarGame.game(saberganarQuestionNavigator.questionNavigator);
+        app = saberganarGame.game(
+            saberganarQuestionNavigator.questionNavigator,
+            saberganarScoreManager.scoreManager);
         app = app.start();
         pageObject = saberganarPageObject.pageObject();
 

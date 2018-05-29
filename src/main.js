@@ -1,13 +1,14 @@
 var saberganar = saberganar || {};
 
-saberganar.game = function (questionNavigator) {
+saberganar.game = function (questionNavigator, scoreManager) {
 
     const page = UI();
+    const score = scoreManager();
+
     let questions;
     let actualPoints;
     let seconds;
     let inSetInterval;
-    let score;
     let theQuestionNavigator;
     let serverData = null;
 
@@ -19,12 +20,6 @@ saberganar.game = function (questionNavigator) {
     function initializeApplicationVariables() {
         actualPoints = 0;
         seconds = 0;
-        score = { //Se guardan los nombres y las puntuaciones de cada jugador
-            names:
-                [],
-            points:
-                []
-        };
         page.disableSendAnswer();
         getQuestions(function (data) {
             questions = data;
@@ -83,7 +78,7 @@ saberganar.game = function (questionNavigator) {
         callback(serverData);
     }
 
-///////////////GAME////////////
+    ///////////////GAME////////////
     function resetTimeAndPoints() {
         resetActualScore();
         page.printScoreUI(actualPoints);
@@ -95,17 +90,9 @@ saberganar.game = function (questionNavigator) {
         actualPoints = 0;
     }
 
-    function savePoints(points) {
-        score.points.push(points);
-    }
-
     function saveUser(name, points) {
-        saveName(name);
-        savePoints(points);
-    }
-
-    function saveName(name) {
-        score.names.push(name);
+        score.saveName(name);
+        score.savePoints(points);
     }
 
     function UI() {
@@ -136,7 +123,7 @@ saberganar.game = function (questionNavigator) {
 
         function onSave() {
             saveUser(page.getInputName(), actualPoints);
-            printPointsAndName(score.names, score.points);
+            printPointsAndName(score.getNames(), score.getPoints());
             resetTimeAndPoints();
             cleanButtonsAndBoxes();
         }
