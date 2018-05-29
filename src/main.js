@@ -4,7 +4,7 @@ saberganar.game = function (questionNavigator) {
 
     const page = UI();
     let questions;
-    let totalPoints;
+    let actualPoints;
     let seconds;
     let inSetInterval;
     let score;
@@ -17,7 +17,7 @@ saberganar.game = function (questionNavigator) {
     }
 
     function initializeApplicationVariables() {
-        totalPoints = 0;
+        actualPoints = 0;
         seconds = 0;
         score = { //Se guardan los nombres y las puntuaciones de cada jugador
             names:
@@ -85,8 +85,8 @@ saberganar.game = function (questionNavigator) {
 
     ///////////////GAME////////////
     function resetTimeAndPoints() {
-        totalPoints = 0;
-        page.printScoreUI(totalPoints);
+        actualPoints = 0;
+        page.printScoreUI(actualPoints);
         stopAndResetTimer();
     }
 
@@ -130,7 +130,7 @@ saberganar.game = function (questionNavigator) {
         }
 
         function onSave() {
-            saveUser(page.getInputName(), totalPoints);
+            saveUser(page.getInputName(), actualPoints);
             printPointsAndName(score.names, score.points);
             resetTimeAndPoints();
             cleanButtonsAndBoxes();
@@ -151,7 +151,7 @@ saberganar.game = function (questionNavigator) {
                 page.updateMessage('¡Incorrecta!');
                 updateTotalPointsIfFails();
             }
-            page.printScoreUI(totalPoints);
+            page.printScoreUI(actualPoints);
             seconds = 0;
         }
 
@@ -289,27 +289,27 @@ saberganar.game = function (questionNavigator) {
         if (seconds === 20) {
             seconds = 0;
             theQuestionNavigator.goToNextQuestion();
-            totalPoints -= 3;
+            actualPoints -= 3;
             page.printQuestionAndAnswers();
-            page.printScoreUI(totalPoints);
+            page.printScoreUI(actualPoints);
         }
     }
 
     function updateTotalPointsIfFails() {
         if (seconds >= 11) {
-            totalPoints -= 2;
+            actualPoints -= 2;
         }
         else if (seconds <= 10) {
-            totalPoints -= 1;
+            actualPoints -= 1;
         }
     }
 
     function updateTotalPointsIfSuccess() {
         if (seconds <= 2) {
-            totalPoints += 2;
+            actualPoints += 2;
         }
         else if (seconds >= 3 && seconds <= 10) {
-            totalPoints += 1;
+            actualPoints += 1;
         }
     }
 
