@@ -157,13 +157,10 @@ saberganar.game = function (questionNavigator) {
 
         ////////////////////////////////////////////
 
-        let message = document.getElementById('message');
-        let timer = document.getElementById('seconds');
         let nameBox = document.getElementById('nameBox');
-        let scoreUI = document.getElementById('scoreUI');
 
         function printScoreUI(points) {
-            scoreUI.innerHTML = ` ${points} puntos`
+            document.getElementById('scoreUI').innerHTML = ` ${points} puntos`
         }
 
         function printQuestionAndAnswers() {
@@ -215,11 +212,11 @@ saberganar.game = function (questionNavigator) {
         }
 
         function printTimer(time) {
-            timer.innerHTML = `${time}`;
+            document.getElementById('seconds').innerHTML = `${time}`;
         }
 
         function updateMessage(messageText) {
-            message.innerHTML = `<h3>${messageText}</h3>`;
+            document.getElementById('message').innerHTML = `<h3>${messageText}</h3>`;
         }
 
         function changeButtonsVisibility() {
