@@ -108,4 +108,3 @@ describe("points from UI", function () {
         }
     });
 });
-

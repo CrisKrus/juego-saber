@@ -5,8 +5,6 @@ saberganar.game = function (questionNavigator) {
     let questions;
     let totalPoints;
     let seconds;
-    let sumPoints;
-    let listNames;
     let inSetInterval;
     let score;
     let theQuestionNavigator;
@@ -87,13 +85,12 @@ saberganar.game = function (questionNavigator) {
     ///////////////GAME////////////
     function resetTimeAndPoints() {
         totalPoints = 0;
-        UI().printScoreUI();
+        UI().printScoreUI(totalPoints);
         stopAndResetTimer();
     }
 
     function savePoints() {
         score.points.push(totalPoints);
-        sumPoints = score.points;
     }
 
     function saveUser() {
@@ -104,7 +101,6 @@ saberganar.game = function (questionNavigator) {
     function saveName() {
         let name = document.querySelector('#inputNameId').value;
         score.names.push(name);
-        listNames = score.names;
     }
 
     function UI() {
@@ -135,7 +131,7 @@ saberganar.game = function (questionNavigator) {
 
         function onSave() {
             saveUser();
-            printPointsAndName(listNames, sumPoints);
+            printPointsAndName(score.names, score.points);
             resetTimeAndPoints();
             cleanButtonsAndBoxes();
         }
@@ -155,7 +151,7 @@ saberganar.game = function (questionNavigator) {
                 UI().updateMessage('¡Incorrecta!');
                 updateTotalPointsIfFails();
             }
-            UI().printScoreUI();
+            UI().printScoreUI(totalPoints);
             seconds = 0;
         }
 
@@ -166,8 +162,8 @@ saberganar.game = function (questionNavigator) {
         let nameBox = document.getElementById('nameBox');
         let scoreUI = document.getElementById('scoreUI');
 
-        function printScoreUI() {
-            scoreUI.innerHTML = ` ${totalPoints} puntos`
+        function printScoreUI(points) {
+            scoreUI.innerHTML = ` ${points} puntos`
         }
 
         function printQuestionAndAnswers() {
@@ -200,13 +196,22 @@ saberganar.game = function (questionNavigator) {
             </div>`;
         }
 
-        function printPointsAndName() {
-            let scoreList = document.querySelector('.list');
+        function printPointsAndName(listNames, sumPoints) {
             let newScoreList = '';
             for (let i = 0; i < listNames.length; i++) {
-                newScoreList = addNewNameAndPointsToScoreboard(newScoreList, i);
+                newScoreList += newNameAndPointsToScoreboard(sumPoints[i], listNames[i]);
             }
-            scoreList.innerHTML = newScoreList;
+            updateScoreBoard(newScoreList);
+        }
+
+        function updateScoreBoard(newScoreList) {
+            document.querySelector('.list').innerHTML = newScoreList;
+        }
+
+        function newNameAndPointsToScoreboard(sumPoints, listNames) {
+            return `<li class="eachBoxPlayer">${listNames} -
+                    <div class="actualPoints"> ${sumPoints} puntos </div>
+                </li>`;
         }
 
         function printTimer(time) {
@@ -215,14 +220,6 @@ saberganar.game = function (questionNavigator) {
 
         function updateMessage(messageText) {
             message.innerHTML = `<h3>${messageText}</h3>`;
-        }
-
-        function addNewNameAndPointsToScoreboard(newScoreList, i) {
-            newScoreList +=
-                `<li class="eachBoxPlayer">${listNames[i]} - 
-                    <div class="actualPoints"> ${sumPoints[i]} puntos </div>
-                </li>`;
-            return newScoreList;
         }
 
         function changeButtonsVisibility() {
@@ -292,7 +289,7 @@ saberganar.game = function (questionNavigator) {
             theQuestionNavigator.goToNextQuestion();
             totalPoints -= 3;
             UI().printQuestionAndAnswers();
-            UI().printScoreUI();
+            UI().printScoreUI(totalPoints);
         }
     }
 
