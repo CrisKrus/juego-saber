@@ -11,4 +11,15 @@ describe('timer', function () {
         expect(timer.getActualSeconds()).toBe(0);
     });
 
+    it('should increment the time', function () {
+        let increment = 2;
+        incrementSeconds(increment);
+
+        expect(timer.getActualSeconds()).toBe(increment);
+    });
+
+    function incrementSeconds(times) {
+        for (let i = 0; i < times; i++) timer.incrementSeconds();
+    }
+
 });
