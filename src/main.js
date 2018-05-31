@@ -84,11 +84,6 @@ saberganar.game = function (questionNavigator, scoreManager) {
         page.printTimer(seconds);
     }
 
-    function saveUser(name, points) {
-        score.saveName(name);
-        score.savePoints(points);
-    }
-
     function areSecondsMoreThan(toCompare) {
         return seconds > toCompare;
     }
@@ -142,7 +137,7 @@ saberganar.game = function (questionNavigator, scoreManager) {
         }
 
         function onSave() {
-            saveUser(page.getInputName(), score.getActualScore());
+            score.saveUserOnScoreboard(page.getInputName(), score.getActualScore());
             printPointsAndName(score.getNames(), score.getPoints());
             resetTimeAndPoints();
             cleanButtonsAndBoxes();
