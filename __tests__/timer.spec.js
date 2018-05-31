@@ -22,4 +22,10 @@ describe('timer', function () {
         for (let i = 0; i < times; i++) timer.incrementSeconds();
     }
 
+    it('should reset the timer', function () {
+        incrementSeconds(24);
+        timer.reset();
+
+        expect(timer.getActualSeconds()).toBe(0);
+    });
 });
