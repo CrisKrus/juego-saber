@@ -1,12 +1,12 @@
 var saberganar = saberganar || {};
 
-saberganar.game = function (questionNavigator, scoreManager) {
+saberganar.game = function (questionNavigator, scoreManager, timerManager) {
 
     const page = UI();
     const score = scoreManager();
+    const timer = timerManager();
 
     let questions;
-    let seconds;
     let inSetInterval;
     let theQuestionNavigator;
     let serverData = null;
@@ -19,7 +19,7 @@ saberganar.game = function (questionNavigator, scoreManager) {
 
     function initializeApplicationVariables() {
         score.resetActualScore();
-        resetTimer();
+        timer.reset();
         getQuestions(function (data) {
             questions = data;
             theQuestionNavigator = questionNavigator(questions);
@@ -81,27 +81,7 @@ saberganar.game = function (questionNavigator, scoreManager) {
         score.resetActualScore();
         page.printScoreUI(score.getActualScore());
         stopAndResetTimer();
-        page.printTimer(seconds);
-    }
-
-    function areSecondsMoreThan(toCompare) {
-        return seconds > toCompare;
-    }
-
-    function areSecondsLessThan(toCompare) {
-        return seconds < toCompare;
-    }
-
-    function resetTimer() {
-        seconds = 0;
-    }
-
-    function incrementSeconds() {
-        seconds++;
-    }
-
-    function isSecondsEqualTo(toCompare) {
-        return seconds === toCompare;
+        page.printTimer(timer.getActualSeconds());
     }
 
     function UI() {
@@ -159,23 +139,23 @@ saberganar.game = function (questionNavigator, scoreManager) {
                 updateTotalPointsIfFails();
             }
             page.printScoreUI(score.getActualScore());
-            resetTimer();
+            timer.reset();
         }
 
         function updateTotalPointsIfFails() {
-            if (areSecondsMoreThan(12)) {
+            if (timer.areSecondsMoreThan(12)) {
                 score.decrementScore(2);
             }
-            else if (areSecondsLessThan(11)) {
+            else if (timer.areSecondsLessThan(11)) {
                 score.decrementScore(1)
             }
         }
 
         function updateTotalPointsIfSuccess() {
-            if (areSecondsLessThan(3)) {
+            if (timer.areSecondsLessThan(3)) {
                 score.incrementScore(2);
             }
-            else if (areSecondsLessThan(11)) {
+            else if (timer.areSecondsLessThan(11)) {
                 score.incrementScore(1);
             }
         }
@@ -300,14 +280,14 @@ saberganar.game = function (questionNavigator, scoreManager) {
     function gameOver() {
         page.toggleInvisibleNameBox();
         stopAndResetTimer();
-        page.printTimer(seconds);
+        page.printTimer(timer.getActualSeconds());
     }
 
     function timerAction() {
-        incrementSeconds();
-        page.printTimer(seconds);
-        if (isSecondsEqualTo(20)) {
-            resetTimer();
+        timer.incrementSeconds();
+        page.printTimer(timer.getActualSeconds());
+        if (timer.areSecondsEqualTo(20)) {
+            timer.reset();
             theQuestionNavigator.goToNextQuestion();
             score.decrementScore(3);
             page.printQuestionAndAnswers();
@@ -317,7 +297,7 @@ saberganar.game = function (questionNavigator, scoreManager) {
 
     function stopAndResetTimer() {
         clearInterval(inSetInterval);
-        resetTimer();
+        timer.reset();
     }
 
     return {
