@@ -1,7 +1,7 @@
 var saberganar = saberganar || {};
 
 saberganar.timer = function () {
-    let seconds;
+    let seconds = 0;
 
     function reset() {
         seconds = 0;
