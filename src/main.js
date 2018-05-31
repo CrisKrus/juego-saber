@@ -15,6 +15,10 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
         initializeApplicationVariables();
         page.disableSendAnswer();
         page.setButtonsListeners();
+        page.setOnStarGame(function () {
+            theQuestionNavigator.resetQuestions();
+            inSetInterval = setInterval(timerAction, 1000); //El setInterval en una variable par luego utilizarla con el clearInterval
+        })
     }
 
     function initializeApplicationVariables() {
@@ -87,32 +91,31 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
     function UI() {
 
         let boxQuestions = document.getElementById('question');
-        let btnSend = document.getElementById('submit-answer');
+        let btnSubmit = document.getElementById('submit-answer');
         let btnStart = document.getElementById('start-button');
 
+        let onStarGame = function () {};
+
         function setButtonsListeners() {
-            btnSend.addEventListener('click', readUserAnswer);
-            btnSend.addEventListener('click', function () {
+            btnSubmit.addEventListener('click', function () {
+                readUserAnswer();
                 theQuestionNavigator.goToNextQuestion();
                 printQuestionAndAnswers();
             });
 
-            btnStart.addEventListener('click', onStart);
+            btnStart.addEventListener('click', function () {
+                changeButtonsVisibility();
+                printQuestionAndAnswers();
+                onStarGame();
+            });
 
             const btnSave = document.querySelector('.btnSave');
             btnSave.addEventListener('click', onSave);
         }
 
-        function onStart() {
-            changeButtonsVisibility();
-            theQuestionNavigator.resetQuestions();
-            printQuestionAndAnswers();
-            inSetInterval = setInterval(timerAction, 1000); //El setInterval en una variable par luego utilizarla con el clearInterval
-        }
-
         function changeButtonsVisibility() {
             boxQuestions.classList.remove('invisible');
-            btnSend.classList.toggle('invisible');
+            btnSubmit.classList.toggle('invisible');
             btnStart.classList.toggle('invisible');
         }
 
@@ -159,8 +162,6 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
                 score.incrementScore(1);
             }
         }
-
-        ////////////////////////////////////////////
 
         let nameBox = document.getElementById('nameBox');
 
@@ -230,7 +231,7 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
 
         function cleanButtonsAndBoxes() {
             btnStart.classList.toggle('invisible');
-            btnSend.classList.toggle('invisible');
+            btnSubmit.classList.toggle('invisible');
             boxQuestions.classList.add('invisible');
             nameBox.classList.add('invisible');
             updateMessage('');
@@ -246,11 +247,11 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
         }
 
         function enableSendAnswerButton() {
-            btnSend.disabled = false
+            btnSubmit.disabled = false
         }
 
         function disableSendAnswer() {
-            btnSend.disabled = true;
+            btnSubmit.disabled = true;
         }
 
         function getOptionChecked(answers) {
@@ -265,6 +266,10 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
             return document.querySelector('#inputNameId').value;
         }
 
+        function setOnStarGame(callback) {
+            onStarGame = callback;
+        }
+
         return {
             setButtonsListeners,
             updateMessage,
@@ -273,7 +278,8 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
             toggleInvisibleNameBox,
             disableSendAnswer,
             printTimer,
-            getInputName
+            getInputName,
+            setOnStarGame
         }
     }
 
