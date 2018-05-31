@@ -28,4 +28,15 @@ describe('timer', function () {
 
         expect(timer.getActualSeconds()).toBe(0);
     });
+
+    it('should compare time', function () {
+        let time = 15,
+            minor = 10,
+            bigger = 19;
+        incrementSeconds(time);
+
+        expect(timer.getActualSeconds()).toBe(time);
+        expect(timer.getActualSeconds()).toBeGreaterThan(minor);
+        expect(timer.getActualSeconds()).toBeLessThan(bigger);
+    });
 });
