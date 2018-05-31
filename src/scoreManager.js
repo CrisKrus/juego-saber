@@ -1,33 +1,54 @@
 var saberganar = saberganar || {};
 
 saberganar.scoreManager = function () {
-    let score = {
+    let scores = {
         names: [],
         points: []
     };
+    let actualPoints = 0;
 
 
     function savePoints(points) {
-        score.points.push(points);
+        scores.points.push(points);
     }
 
     function saveName(name) {
-        score.names.push(name);
+        scores.names.push(name);
     }
 
     function getNames() {
-        return score.names;
+        return scores.names;
     }
 
     function getPoints() {
-        return score.points;
+        return scores.points;
+    }
+
+    function resetActualScore() {
+        actualPoints = 0;
+    }
+
+    function decrementScore(decrement) {
+        actualPoints -= decrement;
+    }
+
+    function incrementScore(increment) {
+        actualPoints += increment;
+    }
+
+    function getActualScore(){
+        return actualPoints;
     }
 
     return {
         saveName,
         savePoints,
+        resetActualScore,
+        decrementScore,
+        incrementScore,
         getNames,
-        getPoints
+        getPoints,
+        getActualScore
     }
 };
 

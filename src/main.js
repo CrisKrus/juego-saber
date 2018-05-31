@@ -6,7 +6,6 @@ saberganar.game = function (questionNavigator, scoreManager) {
     const score = scoreManager();
 
     let questions;
-    let actualPoints;
     let seconds;
     let inSetInterval;
     let theQuestionNavigator;
@@ -19,7 +18,7 @@ saberganar.game = function (questionNavigator, scoreManager) {
     }
 
     function initializeApplicationVariables() {
-        resetActualScore();
+        score.resetActualScore();
         resetTimer();
         getQuestions(function (data) {
             questions = data;
@@ -79,8 +78,8 @@ saberganar.game = function (questionNavigator, scoreManager) {
     }
 
     function resetTimeAndPoints() {
-        resetActualScore();
-        page.printScoreUI(actualPoints);
+        score.resetActualScore();
+        page.printScoreUI(score.getActualScore());
         stopAndResetTimer();
         page.printTimer(seconds);
     }
@@ -88,18 +87,6 @@ saberganar.game = function (questionNavigator, scoreManager) {
     function saveUser(name, points) {
         score.saveName(name);
         score.savePoints(points);
-    }
-
-    function resetActualScore() {
-        actualPoints = 0;
-    }
-
-    function decrementScore(decrement) {
-        actualPoints -= decrement;
-    }
-
-    function incrementScore(increment) {
-        actualPoints += increment;
     }
 
     function areSecondsMoreThan(toCompare) {
@@ -148,8 +135,14 @@ saberganar.game = function (questionNavigator, scoreManager) {
             inSetInterval = setInterval(timerAction, 1000); //El setInterval en una variable par luego utilizarla con el clearInterval
         }
 
+        function changeButtonsVisibility() {
+            boxQuestions.classList.remove('invisible');
+            btnSend.classList.toggle('invisible');
+            btnStart.classList.toggle('invisible');
+        }
+
         function onSave() {
-            saveUser(page.getInputName(), actualPoints);
+            saveUser(page.getInputName(), score.getActualScore());
             printPointsAndName(score.getNames(), score.getPoints());
             resetTimeAndPoints();
             cleanButtonsAndBoxes();
@@ -170,25 +163,25 @@ saberganar.game = function (questionNavigator, scoreManager) {
                 page.updateMessage('¡Incorrecta!');
                 updateTotalPointsIfFails();
             }
-            page.printScoreUI(actualPoints);
+            page.printScoreUI(score.getActualScore());
             resetTimer();
         }
 
         function updateTotalPointsIfFails() {
             if (areSecondsMoreThan(12)) {
-                decrementScore(2);
+                score.decrementScore(2);
             }
             else if (areSecondsLessThan(11)) {
-                decrementScore(1)
+                score.decrementScore(1)
             }
         }
 
         function updateTotalPointsIfSuccess() {
             if (areSecondsLessThan(3)) {
-                incrementScore(2);
+                score.incrementScore(2);
             }
             else if (areSecondsLessThan(11)) {
-                incrementScore(1);
+                score.incrementScore(1);
             }
         }
 
@@ -256,12 +249,6 @@ saberganar.game = function (questionNavigator, scoreManager) {
             document.getElementById('message').innerHTML = `<h3>${messageText}</h3>`;
         }
 
-        function changeButtonsVisibility() {
-            boxQuestions.classList.remove('invisible');
-            btnSend.classList.toggle('invisible');
-            btnStart.classList.toggle('invisible');
-        }
-
         function toggleInvisibleNameBox() {
             nameBox.classList.toggle('invisible');
         }
@@ -327,9 +314,9 @@ saberganar.game = function (questionNavigator, scoreManager) {
         if (isSecondsEqualTo(20)) {
             resetTimer();
             theQuestionNavigator.goToNextQuestion();
-            decrementScore(3);
+            score.decrementScore(3);
             page.printQuestionAndAnswers();
-            page.printScoreUI(actualPoints);
+            page.printScoreUI(score.getActualScore());
         }
     }
 

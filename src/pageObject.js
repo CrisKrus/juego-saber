@@ -11,7 +11,6 @@ saberganar.pageObject = function () {
         let answer = document.getElementById(optionId);
         answer.click();
         expect(answer.checked).toBeTruthy();
-
     }
 
     function submitAnswer() {
@@ -45,7 +44,6 @@ saberganar.pageObject = function () {
     function saveScore() {
         let saveScore = document.getElementById('save-score-button');
         saveScore.click();
-
     }
 
     return {
