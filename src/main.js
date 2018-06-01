@@ -21,19 +21,20 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
             let answer = questions.answers[optionChecked.id];
 
             correctIncorrectAnswer(answer);
+            page.printScore(score.getActualScore());
 
-            page.printScoreUI(score.getActualScore());
             timer.reset();
-
             theQuestionNavigator.goToNextQuestion();
-            page.printQuestionAndAnswers();
+
+            continueGame();
+            page.disableSendAnswer();
         });
 
         page.setOnSave(function () {
             score.saveUserOnScoreboard(page.getInputName(), score.getActualScore());
-            UI().printPointsAndName(score.getNames(), score.getPoints());
+            page.printPointsAndName(score.getNames(), score.getPoints());
             resetTimeAndPoints();
-            UI().cleanButtonsAndBoxes();
+            page.cleanButtonsAndBoxes();
         });
 
         page.setOnStarGame(function () {
@@ -45,11 +46,11 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
     //todo rename it
     function correctIncorrectAnswer(answer) {
         if (answer.isCorrect === true) {
-            UI().updateMessage('¡Correcta!');
+            page.updateMessage('¡Correcta!');
             updateTotalPointsOnSuccess();
         }
         else if (answer.isCorrect !== true) {
-            UI().updateMessage('¡Incorrecta!');
+            page.updateMessage('¡Incorrecta!');
             updateTotalPointsOnFails();
         }
     }
@@ -134,7 +135,7 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
 
     function resetTimeAndPoints() {
         score.resetActualScore();
-        page.printScoreUI(score.getActualScore());
+        page.printScore(score.getActualScore());
         stopAndResetTimer();
         page.printTimer(timer.getActualSeconds());
     }
@@ -158,7 +159,10 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
 
             btnStart.addEventListener('click', function () {
                 changeButtonsVisibility();
-                printQuestionAndAnswers();
+
+                continueGame();
+                disableSendAnswer();
+
                 onStarGame();
             });
 
@@ -173,19 +177,14 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
             btnStart.classList.toggle('invisible');
         }
 
-        function printScoreUI(points) {
-            document.getElementById('scoreUI').innerHTML = ` ${points} puntos`
+        function printScore(score) {
+            document.getElementById('scoreUI').innerHTML = ` ${score} puntos`
         }
 
-        function printQuestionAndAnswers() {
-            if (theQuestionNavigator.isThereMoreQuestions()) {
-                let question = theQuestionNavigator.getQuestion();
-                printQuestion(question);
-                printAnswers(question.answers);
-                addEnableSendButtonEventToOptions();
-            } else {
-                gameOver();
-            }
+        function printQuestionAndOptions(question, options) {
+            printQuestion(question);
+            printAnswers(options);
+            addEnableSendButtonEventToOptions();
             disableSendAnswer();
         }
 
@@ -289,9 +288,9 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
 
         return {
             setButtonsListeners,
-            printScoreUI,
+            printScore,
             updateMessage,
-            printQuestionAndAnswers,
+            printQuestionAndOptions,
             toggleInvisibleNameBox,
             disableSendAnswer,
             printTimer,
@@ -311,6 +310,15 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
         page.printTimer(timer.getActualSeconds());
     }
 
+    function continueGame() {
+        if (theQuestionNavigator.isThereMoreQuestions()) {
+            let question = theQuestionNavigator.getQuestion();
+            page.printQuestionAndOptions(question, question.answers);
+        } else {
+            gameOver();
+        }
+    }
+
     function timerAction() {
         timer.incrementSeconds();
         page.printTimer(timer.getActualSeconds());
@@ -318,8 +326,9 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
             timer.reset();
             theQuestionNavigator.goToNextQuestion();
             score.decrementScore(3);
-            page.printQuestionAndAnswers();
-            page.printScoreUI(score.getActualScore());
+            continueGame();
+            page.disableSendAnswer();
+            page.printScore(score.getActualScore());
         }
     }
 
