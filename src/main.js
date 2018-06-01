@@ -14,7 +14,6 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
     function start() {
         initializeApplicationVariables();
         page.disableSendAnswer();
-        page.setButtonsListeners();
         page.setOnSubmitAnswer(function () {
             let optionChecked = UI().getOptionChecked();
             let questions = theQuestionNavigator.getQuestion();
@@ -41,6 +40,8 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
             theQuestionNavigator.resetQuestions();
             inSetInterval = setInterval(timerAction, 1000); //El setInterval en una variable par luego utilizarla con el clearInterval
         });
+
+        page.setButtonsListeners();
     }
 
     //todo rename it
@@ -160,15 +161,13 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
             btnStart.addEventListener('click', function () {
                 changeButtonsVisibility();
 
-                continueGame();
+                continueGame();//todo extract that
                 disableSendAnswer();
 
                 onStarGame();
             });
 
-            btnSave.addEventListener('click', function () {
-                onSave();
-            });
+            btnSave.addEventListener('click', onSave);
         }
 
         function changeButtonsVisibility() {
@@ -183,7 +182,7 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
 
         function printQuestionAndOptions(question, options) {
             printQuestion(question);
-            printAnswers(options);
+            printOptions(options);
             addEnableSendButtonEventToOptions();
             disableSendAnswer();
         }
@@ -192,7 +191,7 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
             boxQuestions.innerHTML = `<div class="questionBox" id="${question.id}">${question.question}</div>`;
         }
 
-        function printAnswers(answers) {
+        function printOptions(answers) {
             for (let i = 0; i < answers.length; i++) {
                 printAnswer(answers[i]);
             }
