@@ -28,6 +28,14 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
             theQuestionNavigator.goToNextQuestion();
             page.printQuestionAndAnswers();
         });
+
+        page.setOnSave(function () {
+            score.saveUserOnScoreboard(page.getInputName(), score.getActualScore());
+            UI().printPointsAndName(score.getNames(), score.getPoints());
+            resetTimeAndPoints();
+            UI().cleanButtonsAndBoxes();
+        });
+
         page.setOnStarGame(function () {
             theQuestionNavigator.resetQuestions();
             inSetInterval = setInterval(timerAction, 1000); //El setInterval en una variable par luego utilizarla con el clearInterval
@@ -133,12 +141,15 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
 
     function UI() {
 
-        let boxQuestions = document.getElementById('question');
-        let btnSubmit = document.getElementById('submit-answer');
-        let btnStart = document.getElementById('start-button');
+        const boxQuestions = document.getElementById('question');
+        const btnSubmit = document.getElementById('submit-answer');
+        const btnStart = document.getElementById('start-button');
+        const btnSave = document.querySelector('.btnSave');
+        const nameBox = document.getElementById('nameBox');
 
         let onStarGame = function () {};
         let onSubmitAnswer = function () {};
+        let onSave = function () {};
 
         function setButtonsListeners() {
             btnSubmit.addEventListener('click', function () {
@@ -151,8 +162,9 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
                 onStarGame();
             });
 
-            const btnSave = document.querySelector('.btnSave');
-            btnSave.addEventListener('click', onSave);
+            btnSave.addEventListener('click', function () {
+                onSave();
+            });
         }
 
         function changeButtonsVisibility() {
@@ -160,15 +172,6 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
             btnSubmit.classList.toggle('invisible');
             btnStart.classList.toggle('invisible');
         }
-
-        function onSave() {
-            score.saveUserOnScoreboard(page.getInputName(), score.getActualScore());
-            printPointsAndName(score.getNames(), score.getPoints());
-            resetTimeAndPoints();
-            cleanButtonsAndBoxes();
-        }
-
-        let nameBox = document.getElementById('nameBox');
 
         function printScoreUI(points) {
             document.getElementById('scoreUI').innerHTML = ` ${points} puntos`
@@ -280,6 +283,10 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
             onSubmitAnswer = callback;
         }
 
+        function setOnSave(callback) {
+            onSave = callback;
+        }
+
         return {
             setButtonsListeners,
             printScoreUI,
@@ -291,7 +298,10 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
             getInputName,
             setOnStarGame,
             getOptionChecked,
-            setOnSubmitAnswer
+            setOnSubmitAnswer,
+            setOnSave,
+            cleanButtonsAndBoxes,
+            printPointsAndName
         }
     }
 
