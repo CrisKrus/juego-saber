@@ -12,10 +12,11 @@ describe('timer', function () {
     });
 
     it('should increment the time', function () {
+        let initialTime = timer.getActualSeconds();
         let increment = 2;
         incrementSeconds(increment);
 
-        expect(timer.getActualSeconds()).toBe(increment);
+        expect(timer.getActualSeconds()).toBe(initialTime + increment);
     });
 
     function incrementSeconds(times) {
