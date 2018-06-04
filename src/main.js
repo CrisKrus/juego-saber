@@ -14,34 +14,29 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
     function start() {
         initializeApplicationVariables();
         page.disableSendAnswer();
-        page.setOnSubmitAnswer(function () {
-            let optionChecked = UI().getOptionChecked();
-            let questions = theQuestionNavigator.getQuestion();
-            let answer = questions.answers[optionChecked.id];
+        setGameEvents();
+    }
 
-            correctIncorrectAnswer(answer);
-            page.printScore(score.getActualScore());
-
-            timer.reset();
-            theQuestionNavigator.goToNextQuestion();
-
-            continueGame();
-            page.disableSendAnswer();
-        });
-
-        page.setOnSave(function () {
-            score.saveUserOnScoreboard(page.getInputName(), score.getActualScore());
-            page.printPointsAndName(score.getNames(), score.getPoints());
-            resetTimeAndPoints();
-            page.cleanButtonsAndBoxes();
-        });
-
-        page.setOnStarGame(function () {
-            theQuestionNavigator.resetQuestions();
-            inSetInterval = setInterval(timerAction, 1000); //El setInterval en una variable par luego utilizarla con el clearInterval
-        });
-
+    function setGameEvents() {
+        page.setOnSubmitAnswer(onSubmit);
+        page.setOnSave(onSave);
+        page.setOnStarGame(onStart);
         page.setButtonsListeners();
+    }
+
+    function onSubmit() {
+        let optionChecked = UI().getOptionChecked();
+        let questions = theQuestionNavigator.getQuestion();
+        let answer = questions.answers[optionChecked.id];
+
+        correctIncorrectAnswer(answer);
+        page.printScore(score.getActualScore());
+
+        timer.reset();
+
+        theQuestionNavigator.goToNextQuestion();
+        continueGame();
+        page.disableSendAnswer();
     }
 
     //todo rename it
@@ -54,6 +49,18 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
             page.updateMessage('¡Incorrecta!');
             updateTotalPointsOnFails();
         }
+    }
+
+    function onSave() {
+        score.saveUserOnScoreboard(page.getInputName(), score.getActualScore());
+        page.printPointsAndName(score.getNames(), score.getPoints());
+        resetTimeAndPoints();
+        page.cleanButtonsAndBoxes();
+    }
+
+    function onStart() {
+        theQuestionNavigator.resetQuestions();
+        inSetInterval = setInterval(timerAction, 1000); //El setInterval en una variable par luego utilizarla con el clearInterval
     }
 
     function updateTotalPointsOnSuccess() {
@@ -149,19 +156,20 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
         const btnSave = document.querySelector('.btnSave');
         const nameBox = document.getElementById('nameBox');
 
-        let onStarGame = function () {};
-        let onSubmitAnswer = function () {};
-        let onSave = function () {};
+        let onStarGame = function () {
+        };
+        let onSubmitAnswer = function () {
+        };
+        let onSave = function () {
+        };
 
         function setButtonsListeners() {
-            btnSubmit.addEventListener('click', function () {
-                onSubmitAnswer();
-            });
+            btnSubmit.addEventListener('click', onSubmitAnswer);
 
             btnStart.addEventListener('click', function () {
                 changeButtonsVisibility();
 
-                continueGame();//todo extract that
+                continueGame();
                 disableSendAnswer();
 
                 onStarGame();
@@ -323,11 +331,13 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
         page.printTimer(timer.getActualSeconds());
         if (timer.areSecondsEqualTo(20)) {
             timer.reset();
-            theQuestionNavigator.goToNextQuestion();
+
             score.decrementScore(3);
-            continueGame();
-            page.disableSendAnswer();
             page.printScore(score.getActualScore());
+
+            page.disableSendAnswer();
+            theQuestionNavigator.goToNextQuestion();
+            continueGame();
         }
     }
 

@@ -105,7 +105,7 @@ describe("points from UI", function () {
         pageObject.startGame();
 
         let score = pageObject.getActualScoreElement();
-        //TODO jest has 5 seconds timeout
+        //TODO jest has 5 seconds timeout, can't test that
         setTimeout(expectScoreToBeThreePointLessFromTheBeginning, 20000);
 
         function expectScoreToBeThreePointLessFromTheBeginning() {

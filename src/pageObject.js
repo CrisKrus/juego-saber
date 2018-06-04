@@ -15,7 +15,6 @@ saberganar.pageObject = function () {
 
     function submitAnswer() {
         let submitAnswerButton = document.getElementById('submit-answer');
-        //TODO: this should not be there, this is no SRP
         expectToBeAbleToSendTheAnswer(submitAnswerButton);
         submitAnswerButton.click();
     }
