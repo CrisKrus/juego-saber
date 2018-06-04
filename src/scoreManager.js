@@ -1,6 +1,5 @@
-var saberganar = saberganar || {};
+export default function scoreManager() {
 
-saberganar.scoreManager = function () {
     let scoreboards = {
         names: [],
         points: []
@@ -40,7 +39,7 @@ saberganar.scoreManager = function () {
         actualPoints += increment;
     }
 
-    function getActualScore(){
+    function getActualScore() {
         return actualPoints;
     }
 
@@ -54,11 +53,3 @@ saberganar.scoreManager = function () {
         getActualScore
     }
 };
-
-if (isNodeAvailable()) {
-    module.exports = saberganar;
-}
-
-function isNodeAvailable() {
-    return typeof module !== 'undefined';
-}
