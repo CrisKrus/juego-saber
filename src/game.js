@@ -1,4 +1,4 @@
-export default function game(questionNavigator, scoreManager, timerManager) {
+export default function createGame(questionNavigator, scoreManager, timerManager) {
 
     const page = UI();
     const score = scoreManager();
