@@ -27,7 +27,7 @@ export default function createGame(questionNavigator, scoreManager, timerManager
         let questions = theQuestionNavigator.getQuestion();
         let answer = questions.answers[optionChecked.id];
 
-        correctIncorrectAnswer(answer);
+        updateGame(answer);
         page.printScore(score.getActualScore());
 
         timer.reset();
@@ -38,7 +38,7 @@ export default function createGame(questionNavigator, scoreManager, timerManager
     }
 
     //todo rename it
-    function correctIncorrectAnswer(answer) {
+    function updateGame(answer) {
         if (answer.isCorrect === true) {
             page.updateMessage('¡Correcta!');
             updateTotalPointsOnSuccess();
