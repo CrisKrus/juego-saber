@@ -1,4 +1,5 @@
-const saberganarQuestionNavigator = require('../src/questionNavigator');
+import saberganarQuestionNavigator from '../src/questionNavigator';
+// const saberganarQuestionNavigator = require('../src/questionNavigator');
 
 describe('question navigator', function () {
     let questions,
@@ -33,7 +34,7 @@ describe('question navigator', function () {
                 ]
             }
         ];
-        navigator = saberganarQuestionNavigator.questionNavigator(questions);
+        navigator = saberganarQuestionNavigator(questions);
     });
 
     it('should get a question', function () {

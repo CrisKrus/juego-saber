@@ -1,6 +1,8 @@
 var saberganar = saberganar || {};
 
-saberganar.questionNavigator = function (questions) {
+// saberganar.questionNavigator = function (questions) {
+export default function createQuestionNavigator(questions) {
+
     let actualQuestionIndex = 0;
 
     // TODO: always have more questions because don't increment the last one
@@ -33,10 +35,10 @@ saberganar.questionNavigator = function (questions) {
     };
 };
 
-if (isNodeAvailable()) {
-    module.exports = saberganar;
-}
-
-function isNodeAvailable() {
-    return typeof module !== 'undefined';
-}
+// if (isNodeAvailable()) {
+//     module.exports = saberganar;
+// }
+//
+// function isNodeAvailable() {
+//     return typeof module !== 'undefined';
+// }
