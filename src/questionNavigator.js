@@ -1,6 +1,3 @@
-var saberganar = saberganar || {};
-
-// saberganar.questionNavigator = function (questions) {
 export default function createQuestionNavigator(questions) {
 
     let actualQuestionIndex = 0;
@@ -34,11 +31,3 @@ export default function createQuestionNavigator(questions) {
         resetQuestions,
     };
 };
-
-// if (isNodeAvailable()) {
-//     module.exports = saberganar;
-// }
-//
-// function isNodeAvailable() {
-//     return typeof module !== 'undefined';
-// }
