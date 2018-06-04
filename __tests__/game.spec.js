@@ -1,7 +1,7 @@
 const pug = require('pug');
 const saberganarGame = require('../src/game');
 import createQuestionNavigator from '../src/questionNavigator';
-const saberganarPageObject = require('../src/pageObject');
+import saberganarPageObject from '../src/pageObject';
 const saberganarScoreManager = require('../src/scoreManager');
 const saberganarTimer = require('../src/timer');
 
@@ -20,7 +20,7 @@ describe("the game", function () {
         setQuestions();
         app.setServerData(questions);
         app = app.start();
-        pageObject = saberganarPageObject.pageObject();
+        pageObject = saberganarPageObject();
 
     });
 

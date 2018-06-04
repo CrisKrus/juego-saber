@@ -1,6 +1,4 @@
-var saberganar = saberganar || {};
-
-saberganar.pageObject = function () {
+export default function pageObject() {
 
     function startGame() {
         let startButton = document.getElementById('start-button');
@@ -56,11 +54,3 @@ saberganar.pageObject = function () {
         getPlayerScoresElement
     };
 };
-
-if (isNodeAvailable()) {
-    module.exports = saberganar;
-}
-
-function isNodeAvailable() {
-    return typeof module !== 'undefined';
-}
