@@ -1,10 +1,10 @@
-const saberganarTimer = require('../src/timer');
+import saberganarTimer from '../src/timer';
 
 describe('timer', function () {
     let timer;
 
     beforeEach(function () {
-        timer = saberganarTimer.timer();
+        timer = saberganarTimer();
     });
 
     it('should start on zero', function () {

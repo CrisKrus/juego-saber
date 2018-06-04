@@ -3,7 +3,7 @@ const saberganarGame = require('../src/game');
 import createQuestionNavigator from '../src/questionNavigator';
 import saberganarPageObject from '../src/pageObject';
 import saberganarScoreManager from '../src/scoreManager';
-const saberganarTimer = require('../src/timer');
+import saberganarTimer from '../src/timer';
 
 describe("the game", function () {
     let app,
@@ -15,7 +15,7 @@ describe("the game", function () {
         app = saberganarGame.game(
             createQuestionNavigator,
             saberganarScoreManager,
-            saberganarTimer.timer
+            saberganarTimer
         );
         setQuestions();
         app.setServerData(questions);

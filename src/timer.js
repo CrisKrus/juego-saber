@@ -1,6 +1,6 @@
-var saberganar = saberganar || {};
+// saberganar.timer = function () {
+export default function timer() {
 
-saberganar.timer = function () {
     let seconds = 0;
 
     function reset() {
@@ -37,11 +37,3 @@ saberganar.timer = function () {
     };
 
 };
-
-if (isNodeAvailable()) {
-    module.exports = saberganar;
-}
-
-function isNodeAvailable() {
-    return typeof module !== 'undefined';
-}
