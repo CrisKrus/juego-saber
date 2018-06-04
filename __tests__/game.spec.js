@@ -1,5 +1,5 @@
 const pug = require('pug');
-const saberganarGame = require('../src/main');
+const saberganarGame = require('../src/game');
 const saberganarQuestionNavigator = require('../src/questionNavigator');
 const saberganarPageObject = require('../src/pageObject');
 const saberganarScoreManager = require('../src/scoreManager');
