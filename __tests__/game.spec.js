@@ -1,5 +1,5 @@
 const pug = require('pug');
-const saberganarGame = require('../src/game');
+import saberganarGame from '../src/game';
 import createQuestionNavigator from '../src/questionNavigator';
 import saberganarPageObject from '../src/pageObject';
 import saberganarScoreManager from '../src/scoreManager';
@@ -12,7 +12,7 @@ describe("the game", function () {
 
     beforeEach(function () {
         document.body.innerHTML = pug.compileFile('./views/main.pug', null)();
-        app = saberganarGame.game(
+        app = saberganarGame(
             createQuestionNavigator,
             saberganarScoreManager,
             saberganarTimer

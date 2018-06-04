@@ -1,4 +1,3 @@
-// saberganar.timer = function () {
 export default function timer() {
 
     let seconds = 0;

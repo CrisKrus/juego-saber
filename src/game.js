@@ -1,6 +1,4 @@
-var saberganar = saberganar || {};
-
-saberganar.game = function (questionNavigator, scoreManager, timerManager) {
+export default function game(questionNavigator, scoreManager, timerManager) {
 
     const page = UI();
     const score = scoreManager();
@@ -353,11 +351,3 @@ saberganar.game = function (questionNavigator, scoreManager, timerManager) {
         }
     }
 };
-
-if (isNodeAvailable()) {
-    module.exports = saberganar;
-}
-
-function isNodeAvailable() {
-    return typeof module !== 'undefined';
-}
