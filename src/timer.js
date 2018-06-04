@@ -34,5 +34,4 @@ export default function timer() {
         areSecondsLessThan,
         areSecondsEqualTo
     };
-
 };
