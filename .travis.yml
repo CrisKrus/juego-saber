@@ -1,0 +1,11 @@
+lenguage: node_js
+node_js:
+  - "6.11.5"
+sript:
+  - echo "Deploying!"
+#  npm test
+# etc
+install:
+  - npm install -g firebase-tools
+affter_success:
+  - firebase deploy --token $FIREBASE_TOKEN
