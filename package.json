@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "test": "jest --watchAll",
+    "test": "jest --all",
+    "testWatch": "jest --all",
     "serve": "node src/server.js"
   },
   "devDependencies": {
