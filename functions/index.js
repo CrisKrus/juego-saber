@@ -49,4 +49,9 @@ app.get('/api/questions', (request, response) => {
     response.send(JSON.stringify(questions));
 });
 
+app.get('/hello/:name?', (request, response) => {
+    let name = request.params.name || "World!";
+    response.send("Hello " + name);
+});
+
 exports.app = functions.https.onRequest(app);
