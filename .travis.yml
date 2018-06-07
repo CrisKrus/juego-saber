@@ -2,9 +2,8 @@ lenguage: node_js
 node_js:
   - "6.11.5"
 sript:
-  - echo "Deploying!"
-#  npm test
-# etc
+  - npm test
+  - npm install
 install:
   - npm install -g firebase-tools
 affter_success:
