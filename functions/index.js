@@ -2,6 +2,11 @@ const functions = require('firebase-functions');
 const express = require('express');
 const app = express();
 
+// CONFIGURATION:
+app.use(express.static('src'));
+app.set('view engine', 'pug');
+app.set('views', 'views');
+
 app.get('/api/questions', (request, response) => {
     let questions = [
         {
@@ -52,6 +57,10 @@ app.get('/api/questions', (request, response) => {
 app.get('/hello/:name?', (request, response) => {
     let name = request.params.name || "World!";
     response.send("Hello " + name);
+});
+
+app.get('/juego-saber', (request, response) => {
+    response.render('index');
 });
 
 exports.app = functions.https.onRequest(app);
