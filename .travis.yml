@@ -4,7 +4,8 @@ node_js:
 sript:
   - yarn install
 install:
-  - npm install -g firebase-tools
-  - npm install jest --dev
+  - yarn install -g firebase-tools
+  - yarn install jest --only=dev
+  - yarn install babel-plugin-transform-es2015-modules-commonjs --dev
 affter_success:
   - firebase deploy --token $FIREBASE_TOKEN
