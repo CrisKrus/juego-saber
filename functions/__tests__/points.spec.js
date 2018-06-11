@@ -11,8 +11,7 @@ describe("points from UI", function () {
         pageObject;
 
     beforeEach(function () {
-        // document.body.innerHTML = pug.compileFile('./views/main.pug', null)();
-        document.body.innerHTML = pug.compileFile('../views/main.pug', null)();
+        document.body.innerHTML = pug.compileFile('./views/main.pug', null)();
         app = createGame(
             createQuestionNavigator,
             saberganerScoreManager,
