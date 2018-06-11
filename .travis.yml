@@ -2,8 +2,9 @@ language: node_js
 node_js:
   - "6.11.5"
 sript:
-  - npm install
+  - yarn install
 install:
   - npm install -g firebase-tools
+  - npm install jest --dev
 affter_success:
   - firebase deploy --token $FIREBASE_TOKEN
