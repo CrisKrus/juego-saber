@@ -20,7 +20,7 @@ describe('score manager', () => {
         let i = 0;
 
         for (let user of users) {
-            scoreboard.saveUserOnScoreboard(user, points[i++]);
+            scoreboard.saveUserAndScore(user, points[i++]);
         }
 
         expect(scoreboard.getNames()).toEqual(users);

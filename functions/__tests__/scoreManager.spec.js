@@ -8,37 +8,37 @@ describe('score manager', () => {
     });
 
     it('should start points on zero', function () {
-        expect(score.getActualScore()).toBe(0);
+        expect(score.getScore()).toBe(0);
     });
 
     it('should increment points', function () {
-        let initialPoints = score.getActualScore();
+        let initialPoints = score.getScore();
         let increment = 12;
 
-        score.incrementScore(increment);
+        score.increment(increment);
 
-        expect(initialPoints + increment).toBe(score.getActualScore());
+        expect(initialPoints + increment).toBe(score.getScore());
     });
 
     it('should decrement points', function () {
-        let initialPoints = score.getActualScore();
+        let initialPoints = score.getScore();
         let increment = 45;
         let decrement = 15;
 
-        score.incrementScore(increment);
-        score.decrementScore(decrement);
+        score.increment(increment);
+        score.decrement(decrement);
 
         expect(initialPoints + increment - decrement)
-            .toBe(score.getActualScore())
+            .toBe(score.getScore())
     });
 
     it('should reset points to zero', function () {
         let increment = 12;
 
-        score.incrementScore(increment);
-        expect(score.getActualScore()).toBe(increment);
+        score.increment(increment);
+        expect(score.getScore()).toBe(increment);
 
-        score.resetActualScore();
-        expect(score.getActualScore()).toBe(0);
+        score.resetScore();
+        expect(score.getScore()).toBe(0);
     });
 });

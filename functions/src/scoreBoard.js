@@ -4,7 +4,7 @@ export default function scoreBoard() {
         points: []
     };
 
-    function saveUserOnScoreboard(name, score) {
+    function saveUserAndScore(name, score) {
         savePointsOnScoreBoard(score);
         saveNameOnScoreboard(name);
     }
@@ -26,7 +26,7 @@ export default function scoreBoard() {
     }
 
     return {
-        saveUserOnScoreboard,
+        saveUserAndScore,
         getNames,
         getPoints
     }

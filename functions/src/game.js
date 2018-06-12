@@ -31,7 +31,7 @@ export default function createGame(questionNavigator, scoreManager, timerManager
         let answer = questions.answers[optionChecked.id];
 
         updateGame(answer);
-        page.printScore(score.getActualScore());
+        page.printScore(score.getScore());
 
         timer.reset();
 
@@ -53,7 +53,7 @@ export default function createGame(questionNavigator, scoreManager, timerManager
     }
 
     function onSave() {
-        scoreBoardManager.saveUserOnScoreboard(page.getInputName(), score.getActualScore());
+        scoreBoardManager.saveUserAndScore(page.getInputName(), score.getScore());
         page.printPointsAndName(scoreBoardManager.getNames(), scoreBoardManager.getPoints());
         resetTimeAndPoints();
         page.cleanButtonsAndBoxes();
@@ -66,24 +66,24 @@ export default function createGame(questionNavigator, scoreManager, timerManager
 
     function updateTotalPointsOnSuccess() {
         if (timer.areSecondsLessThan(3)) {
-            score.incrementScore(2);
+            score.increment(2);
         }
         else if (timer.areSecondsLessThan(11)) {
-            score.incrementScore(1);
+            score.increment(1);
         }
     }
 
     function updateTotalPointsOnFails() {
         if (timer.areSecondsMoreThan(12)) {
-            score.decrementScore(2);
+            score.decrement(2);
         }
         else if (timer.areSecondsLessThan(11)) {
-            score.decrementScore(1)
+            score.decrement(1)
         }
     }
 
     function initializeApplicationVariables() {
-        score.resetActualScore();
+        score.resetScore();
         timer.reset();
         getQuestions(function (data) {
             questions = data;
@@ -143,8 +143,8 @@ export default function createGame(questionNavigator, scoreManager, timerManager
     }
 
     function resetTimeAndPoints() {
-        score.resetActualScore();
-        page.printScore(score.getActualScore());
+        score.resetScore();
+        page.printScore(score.getScore());
         stopAndResetTimer();
         page.printTimer(timer.getActualSeconds());
     }
@@ -333,8 +333,8 @@ export default function createGame(questionNavigator, scoreManager, timerManager
         if (timer.areSecondsEqualTo(20)) {
             timer.reset();
 
-            score.decrementScore(3);
-            page.printScore(score.getActualScore());
+            score.decrement(3);
+            page.printScore(score.getScore());
 
             page.disableSendAnswer();
             theQuestionNavigator.goToNextQuestion();

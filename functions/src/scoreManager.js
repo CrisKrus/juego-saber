@@ -2,26 +2,26 @@ export default function scoreManager() {
 
     let actualPoints = 0;
 
-    function resetActualScore() {
+    function resetScore() {
         actualPoints = 0;
     }
 
-    function decrementScore(decrement) {
+    function decrement(decrement) {
         actualPoints -= decrement;
     }
 
-    function incrementScore(increment) {
+    function increment(increment) {
         actualPoints += increment;
     }
 
-    function getActualScore() {
+    function getScore() {
         return actualPoints;
     }
 
     return {
-        getActualScore,
-        incrementScore,
-        decrementScore,
-        resetActualScore
+        getScore,
+        increment,
+        decrement,
+        resetScore
     }
 };
