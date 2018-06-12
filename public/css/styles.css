@@ -3,6 +3,16 @@
 }
 
 body{
-    max-width: 500px;
+    /*max-width: 500px;*/
     margin: auto;
+    background: #FFF0DB;
+    text-align: center;
+}
+
+.scores, .bonus{
+    background: #FFCF8F;
+}
+
+.header{
+    background: #FAEBD7;
 }
