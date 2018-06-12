@@ -5,7 +5,7 @@ import saberganarPageObject from '../src/pageObject';
 import saberganarScoreManager from '../src/scoreManager';
 import saberganarTimer from '../src/timer';
 
-describe("score board", function () {
+describe("score board from UI", function () {
     let app,
         players,
         pageObject;
