@@ -48,4 +48,17 @@ describe('score manager', () => {
         expect(score.getNames()).toEqual(empty);
         expect(score.getPoints()).toEqual(empty);
     });
+
+    it('should save user and points on scoreboard', function () {
+        let users = ['Pepe', 'Antonio', 'Jose Luis'];
+        let points = [2, 6, 34];
+        let i = 0;
+
+        for (let user of users) {
+            score.saveUserOnScoreboard(user, points[i++]);
+        }
+
+        expect(score.getNames()).toEqual(users);
+        expect(score.getPoints()).toEqual(points);
+    });
 });
