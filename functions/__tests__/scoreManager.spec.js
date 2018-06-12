@@ -41,4 +41,11 @@ describe('score manager', () => {
         score.resetActualScore();
         expect(score.getActualScore()).toBe(0);
     });
+
+    it('should start with an empty scoreboard', function () {
+        let empty = [];
+
+        expect(score.getNames()).toEqual(empty);
+        expect(score.getPoints()).toEqual(empty);
+    });
 });
