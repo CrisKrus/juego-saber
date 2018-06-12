@@ -9,6 +9,5 @@ install:
   - yarn add -D jest
   - yarn add -D babel-plugin-transform-es2015-modules-commonjs
   - yarn install
-  - cd functions && yarn install && yarn jest
 after_success:
   - firebase deploy --token $FIREBASE_TOKEN
