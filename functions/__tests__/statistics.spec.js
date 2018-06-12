@@ -25,6 +25,13 @@ describe('statistics', () => {
     it('should start with zero incorrect answers', function () {
         expect(stats.getCountIncorrectAnswers()).toBe(0);
     });
+
+    it('should increment incorrect answers', function () {
+        stats.addIncorrectAnswers();
+        stats.addIncorrectAnswers();
+
+        expect(stats.getCountIncorrectAnswers()).toBe(2);
+    });
 });
 
 export default function statistics(){
