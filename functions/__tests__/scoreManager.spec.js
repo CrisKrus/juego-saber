@@ -19,4 +19,16 @@ describe('score manager', () => {
 
         expect(initialPoints + increment).toBe(score.getActualScore());
     });
+
+    it('should decrement points', function () {
+        let initialPoints = score.getActualScore();
+        let increment = 45;
+        let decrement = 15;
+
+        score.incrementScore(increment);
+        score.decrementScore(decrement);
+
+        expect(initialPoints + increment - decrement)
+            .toBe(score.getActualScore())
+    });
 });
