@@ -27,8 +27,8 @@ describe('statistics', () => {
     });
 
     it('should increment incorrect answers', function () {
-        stats.addIncorrectAnswers();
-        stats.addIncorrectAnswers();
+        stats.addIncorrectAnswer();
+        stats.addIncorrectAnswer();
 
         expect(stats.getCountIncorrectAnswers()).toBe(2);
     });
@@ -36,6 +36,7 @@ describe('statistics', () => {
 
 export default function statistics(){
     let correctAnswers = 0;
+    let incorrectAnswers = 0;
 
     function getCountCorrectAnswers() {
         return correctAnswers;
@@ -46,12 +47,17 @@ export default function statistics(){
     }
 
     function getCountIncorrectAnswers() {
-        return 0;
+        return incorrectAnswers;
+    }
+
+    function addIncorrectAnswer() {
+        incorrectAnswers++;
     }
 
     return {
         getCountCorrectAnswers,
         addCorrectAnswer,
-        getCountIncorrectAnswers
+        getCountIncorrectAnswers,
+        addIncorrectAnswer
     }
 };
