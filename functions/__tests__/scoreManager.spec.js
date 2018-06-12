@@ -31,4 +31,14 @@ describe('score manager', () => {
         expect(initialPoints + increment - decrement)
             .toBe(score.getActualScore())
     });
+
+    it('should reset points to zero', function () {
+        let increment = 12;
+
+        score.incrementScore(increment);
+        expect(score.getActualScore()).toBe(increment);
+
+        score.resetActualScore();
+        expect(score.getActualScore()).toBe(0);
+    });
 });

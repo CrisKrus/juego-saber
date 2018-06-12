@@ -45,11 +45,11 @@ export default function scoreManager() {
 
     return {
         saveUserOnScoreboard,
-        resetActualScore,
-        decrementScore,
-        incrementScore,
         getNames,
         getPoints,
-        getActualScore
+        getActualScore,
+        incrementScore,
+        decrementScore,
+        resetActualScore
     }
 };
