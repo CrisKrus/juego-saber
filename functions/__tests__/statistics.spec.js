@@ -11,5 +11,11 @@ describe('statistics', () => {
 });
 
 export default function statistics(){
+    function correctAnswers() {
+        return 0;
+    }
 
+    return {
+        correctAnswers
+    }
 };
