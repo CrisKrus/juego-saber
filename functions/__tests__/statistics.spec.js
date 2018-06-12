@@ -9,11 +9,17 @@ describe('statistics', () => {
         expect(stats.getCountCorrectAnswers()).toBe(0);
     });
 
-    it('should increment correct answers', function () {
-        stats.addCorrectAnswer();
-        stats.addCorrectAnswer();
+    function incrementCorrectAnswers(timesIncremented) {
+        for (let i = 0; i < timesIncremented; i++) {
+            stats.addCorrectAnswer();
+        }
+    }
 
-        expect(stats.getCountCorrectAnswers()).toBe(2);
+    it('should increment correct answers', function () {
+        let timesIncremented = 3;
+        incrementCorrectAnswers(timesIncremented);
+
+        expect(stats.getCountCorrectAnswers()).toBe(timesIncremented);
     });
 });
 
