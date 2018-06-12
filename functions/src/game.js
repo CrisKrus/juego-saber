@@ -1,4 +1,4 @@
-import scoreBoard from "./scoreBoard";
+import scoreBoard from "./scoreBoard.js";
 
 export default function createGame(questionNavigator, scoreManager, timerManager) {
 
