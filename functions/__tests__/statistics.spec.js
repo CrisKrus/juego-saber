@@ -28,7 +28,7 @@ describe('statistics', () => {
 });
 
 export default function statistics(){
-    var correctAnswers = 0;
+    let correctAnswers = 0;
 
     function getCountCorrectAnswers() {
         return correctAnswers;
@@ -38,8 +38,13 @@ export default function statistics(){
         correctAnswers++;
     }
 
+    function getCountIncorrectAnswers() {
+        return 0;
+    }
+
     return {
         getCountCorrectAnswers,
-        addCorrectAnswer
+        addCorrectAnswer,
+        getCountIncorrectAnswers
     }
 };
