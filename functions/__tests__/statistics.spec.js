@@ -26,17 +26,33 @@ describe('statistics', () => {
         expect(stats.getCountIncorrectAnswers()).toBe(0);
     });
 
+    it('should increment incorrect answers', function () {
+        let timesIncremented = 2;
+        incrementIncorrectAnswers(timesIncremented);
+
+        expect(stats.getCountIncorrectAnswers()).toBe(timesIncremented);
+    });
+
     function incrementIncorrectAnswers(timesIncremented) {
         for (let i = 0; i < timesIncremented; i++) {
             stats.addIncorrectAnswer();
         }
     }
 
-    it('should increment incorrect answers', function () {
-        let timesIncremented = 2;
-        incrementIncorrectAnswers(timesIncremented);
+    it('should reset statistics', function () {
+        let correctAnswers = 4;
+        let incorrectAnswers = 14;
 
-        expect(stats.getCountIncorrectAnswers()).toBe(timesIncremented);
+        incrementCorrectAnswers(correctAnswers);
+        incrementIncorrectAnswers(incorrectAnswers);
+
+        expect(stats.getCountIncorrectAnswers()).toBe(incorrectAnswers);
+        expect(stats.getCountCorrectAnswers()).toBe(correctAnswers);
+
+        stats.reset();
+
+        expect(stats.getCountCorrectAnswers()).toBe(0);
+        expect(stats.getCountIncorrectAnswers()).toBe(0);
     });
 });
 
