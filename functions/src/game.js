@@ -1,7 +1,10 @@
+import scoreBoard from "./scoreBoard";
+
 export default function createGame(questionNavigator, scoreManager, timerManager) {
 
     const page = UI();
     const score = scoreManager();
+    const scoreBoardManager = scoreBoard();
     const timer = timerManager();
 
     let questions;
@@ -50,8 +53,8 @@ export default function createGame(questionNavigator, scoreManager, timerManager
     }
 
     function onSave() {
-        score.saveUserOnScoreboard(page.getInputName(), score.getActualScore());
-        page.printPointsAndName(score.getNames(), score.getPoints());
+        scoreBoardManager.saveUserOnScoreboard(page.getInputName(), score.getActualScore());
+        page.printPointsAndName(scoreBoardManager.getNames(), scoreBoardManager.getPoints());
         resetTimeAndPoints();
         page.cleanButtonsAndBoxes();
     }
