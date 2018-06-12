@@ -59,7 +59,7 @@ app.get('/hello/:name?', (request, response) => {
     response.send("Hello " + name);
 });
 
-app.get('/juego-saber', (request, response) => {
+app.get('/', (request, response) => {
     response.render('index');
 });
 
