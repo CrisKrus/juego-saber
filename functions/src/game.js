@@ -64,10 +64,13 @@ export default function createGame(questionNavigator, scoreManager, timerManager
         page.printPointsAndName(scoreBoardManager.getNames(), scoreBoardManager.getPoints());
         resetTimeAndPoints();
         page.cleanButtonsAndBoxes();
+
+        stats.reset();
+        page.updateCorrectAnswers(stats.getCountCorrectAnswers());
+        page.updateIncorrectAnswers(stats.getCountIncorrectAnswers());
     }
 
     function onStart() {
-        stats.reset();
         theQuestionNavigator.resetQuestions();
         inSetInterval = setInterval(timerAction, 1000); //El setInterval en una variable par luego utilizarla con el clearInterval
     }
