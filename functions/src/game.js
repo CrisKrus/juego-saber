@@ -181,6 +181,9 @@ export default function createGame(questionNavigator, scoreManager, timerManager
             score.decrement(3);
             page.printScore(score.getScore());
 
+            stats.addIncorrectAnswer();
+            page.updateIncorrectAnswers(stats.getCountIncorrectAnswers());
+
             page.disableSendAnswer();
             theQuestionNavigator.goToNextQuestion();
             continueGame();
