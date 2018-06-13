@@ -1,3 +1,5 @@
+import statistics from "../src/statistics.js";
+
 describe('statistics', () => {
     let stats;
 
@@ -55,31 +57,3 @@ describe('statistics', () => {
         expect(stats.getCountIncorrectAnswers()).toBe(0);
     });
 });
-
-export default function statistics() {
-    let correctAnswers = 0;
-    let incorrectAnswers = 0;
-
-    function getCountCorrectAnswers() {
-        return correctAnswers;
-    }
-
-    function addCorrectAnswer() {
-        correctAnswers++;
-    }
-
-    function getCountIncorrectAnswers() {
-        return incorrectAnswers;
-    }
-
-    function addIncorrectAnswer() {
-        incorrectAnswers++;
-    }
-
-    return {
-        getCountCorrectAnswers,
-        addCorrectAnswer,
-        getCountIncorrectAnswers,
-        addIncorrectAnswer
-    }
-};
