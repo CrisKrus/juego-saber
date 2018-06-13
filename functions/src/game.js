@@ -1,10 +1,11 @@
 import scoreBoard from "./scoreBoard.js";
+import statistics from "./statistics.js";
 
 export default function createGame(questionNavigator, scoreManager, timerManager) {
 
     const page = UI();
     const scoreBoardManager = scoreBoard();
-
+    const stats = statistics();
     const score = scoreManager();
     const timer = timerManager();
 
@@ -27,14 +28,17 @@ export default function createGame(questionNavigator, scoreManager, timerManager
     }
 
     function onSubmit() {
-        let optionChecked = UI().getOptionChecked();
+        let optionChecked = page.getOptionChecked();
         let questions = theQuestionNavigator.getQuestion();
         let answer = questions.answers[optionChecked.id];
 
         updateGame(answer);
-        page.printScore(score.getScore());
 
+        page.printScore(score.getScore());
         timer.reset();
+
+        page.updateCorrectAnswers(stats.getCountCorrectAnswers());
+        page.updateIncorrectAnswers(stats.getCountIncorrectAnswers());
 
         theQuestionNavigator.goToNextQuestion();
         continueGame();
@@ -46,10 +50,12 @@ export default function createGame(questionNavigator, scoreManager, timerManager
         if (answer.isCorrect === true) {
             page.updateMessage('¡Correcta!');
             updateTotalPointsOnSuccess();
+            stats.addCorrectAnswer();
         }
         else if (answer.isCorrect !== true) {
             page.updateMessage('¡Incorrecta!');
             updateTotalPointsOnFails();
+            stats.addIncorrectAnswer();
         }
     }
 
@@ -61,6 +67,7 @@ export default function createGame(questionNavigator, scoreManager, timerManager
     }
 
     function onStart() {
+        stats.reset();
         theQuestionNavigator.resetQuestions();
         inSetInterval = setInterval(timerAction, 1000); //El setInterval en una variable par luego utilizarla con el clearInterval
     }
