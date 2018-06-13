@@ -3,7 +3,6 @@
 }
 
 body{
-    /*max-width: 500px;*/
     margin: auto;
     background: #FFF0DB;
     text-align: center;
@@ -15,4 +14,9 @@ body{
 
 .header{
     background: #FAEBD7;
+}
+
+.scores, .bonus{
+    max-width: 500px;
+    margin: auto;
 }

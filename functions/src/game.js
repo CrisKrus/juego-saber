@@ -3,8 +3,9 @@ import scoreBoard from "./scoreBoard.js";
 export default function createGame(questionNavigator, scoreManager, timerManager) {
 
     const page = UI();
-    const score = scoreManager();
     const scoreBoardManager = scoreBoard();
+
+    const score = scoreManager();
     const timer = timerManager();
 
     let questions;
@@ -149,6 +150,48 @@ export default function createGame(questionNavigator, scoreManager, timerManager
         page.printTimer(timer.getActualSeconds());
     }
 
+    function gameOver() {
+        page.toggleInvisibleNameBox();
+        stopAndResetTimer();
+        page.printTimer(timer.getActualSeconds());
+    }
+
+    function continueGame() {
+        if (theQuestionNavigator.isThereMoreQuestions()) {
+            let question = theQuestionNavigator.getQuestion();
+            page.printQuestionAndOptions(question, question.answers);
+        } else {
+            gameOver();
+        }
+    }
+
+    function timerAction() {
+        timer.incrementSeconds();
+        page.printTimer(timer.getActualSeconds());
+        if (timer.areSecondsEqualTo(20)) {
+            timer.reset();
+
+            score.decrement(3);
+            page.printScore(score.getScore());
+
+            page.disableSendAnswer();
+            theQuestionNavigator.goToNextQuestion();
+            continueGame();
+        }
+    }
+
+    function stopAndResetTimer() {
+        clearInterval(inSetInterval);
+        timer.reset();
+    }
+
+    return {
+        start,
+        setServerData: function (data) {
+            serverData = data;
+        }
+    };
+
     function UI() {
 
         const boxQuestions = document.getElementById('question');
@@ -224,6 +267,14 @@ export default function createGame(questionNavigator, scoreManager, timerManager
 
         function updateScoreBoard(newScoreList) {
             document.querySelector('.list').innerHTML = newScoreList;
+        }
+
+        function updateCorrectAnswers(count) {
+            document.getElementById('correct-answers').innerText = count;
+        }
+
+        function updateIncorrectAnswers(count) {
+            document.getElementById('incorrect-answers').innerText = count;
         }
 
         function newNameAndPointsToScoreboard(sumPoints, listNames) {
@@ -308,49 +359,9 @@ export default function createGame(questionNavigator, scoreManager, timerManager
             setOnSubmitAnswer,
             setOnSave,
             cleanButtonsAndBoxes,
-            printPointsAndName
-        }
-    }
-
-    function gameOver() {
-        page.toggleInvisibleNameBox();
-        stopAndResetTimer();
-        page.printTimer(timer.getActualSeconds());
-    }
-
-    function continueGame() {
-        if (theQuestionNavigator.isThereMoreQuestions()) {
-            let question = theQuestionNavigator.getQuestion();
-            page.printQuestionAndOptions(question, question.answers);
-        } else {
-            gameOver();
-        }
-    }
-
-    function timerAction() {
-        timer.incrementSeconds();
-        page.printTimer(timer.getActualSeconds());
-        if (timer.areSecondsEqualTo(20)) {
-            timer.reset();
-
-            score.decrement(3);
-            page.printScore(score.getScore());
-
-            page.disableSendAnswer();
-            theQuestionNavigator.goToNextQuestion();
-            continueGame();
-        }
-    }
-
-    function stopAndResetTimer() {
-        clearInterval(inSetInterval);
-        timer.reset();
-    }
-
-    return {
-        start,
-        setServerData: function (data) {
-            serverData = data;
+            printPointsAndName,
+            updateCorrectAnswers,
+            updateIncorrectAnswers
         }
     }
 };
