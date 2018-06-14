@@ -6,6 +6,7 @@ sript:
 install:
   - yarn add pug
   - yarn global add firebase-tools
+  - yarn add firebase
   - yarn add -D jest
   - yarn add -D babel-plugin-transform-es2015-modules-commonjs
   - yarn install
