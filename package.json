@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "cd functions && yarn install && yarn jest",
+    "test": "jest",
     "testWatch": "jest --all",
     "serve": "node src/server.js"
   },

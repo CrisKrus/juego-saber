@@ -1,4 +1,7 @@
+import firebase from 'firebase';
+
 export default function client() {
+    //todo remove apiKey and put ir as variable on deploy environment
     const config = {
         apiKey: "AIzaSyDA8otk-0-O08vjWtv3iHaY2JRZmXIgU1w",
         authDomain: "saber-ganar.firebaseapp.com",
@@ -7,7 +10,14 @@ export default function client() {
         storageBucket: "saber-ganar.appspot.com",
         messagingSenderId: "264673872993"
     };
-    firebase.initializeApp(config);
+
+    if (isNotInitialize()){
+        firebase.initializeApp(config);
+    }
+
+    function isNotInitialize() {
+        return !firebase.apps.length;
+    }
 
     function saveScore(userName, score, stats) {
         firebase.database().ref('scoreboard').push({
@@ -26,7 +36,10 @@ export default function client() {
             firebase.database().ref('scoreboard').orderByChild('order').limitToFirst(10)
                 .on('child_added', (snap) => {
                     count++;
-                    topTen.push({score: snap.val().score, userName: snap.val().userName});
+                    topTen.push({
+                        score: snap.val().score,
+                        userName: snap.val().userName
+                    });
                     if (count === 10) resolve(topTen);
                 });
         }));
