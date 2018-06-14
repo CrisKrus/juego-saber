@@ -7,6 +7,7 @@ export default function createGame(questionNavigator, scoreManager, timerManager
     const page = UI();
     const scoreBoardManager = scoreBoard();
     const stats = statistics();
+    const remoteClient = client();
     const score = scoreManager();
     const timer = timerManager();
 
@@ -64,7 +65,7 @@ export default function createGame(questionNavigator, scoreManager, timerManager
         scoreBoardManager.saveUserAndScore(page.getInputName(), score.getScore());
         page.printPointsAndName(scoreBoardManager.getNames(), scoreBoardManager.getPoints());
 
-        client().saveScore(page.getInputName(), score.getScore(), stats);
+        remoteClient.saveScore(page.getInputName(), score.getScore(), stats);
 
         resetTimeAndPoints();
         page.cleanButtonsAndBoxes();

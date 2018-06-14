@@ -14,11 +14,26 @@ export default function client() {
             userName: userName,
             score: score,
             correctAnswers: stats.getCountCorrectAnswers(),
-            incorrectAnswers: stats.getCountIncorrectAnswers()
+            incorrectAnswers: stats.getCountIncorrectAnswers(),
+            order: (score * -1)
         });
+    }
+
+    function getTopTenScores() {
+        let topTen = [];
+        let count = 0;
+        return new Promise((resolve => {
+            firebase.database().ref('scoreboard').orderByChild('order').limitToFirst(10)
+                .on('child_added', (snap) => {
+                    count++;
+                    topTen.push({score: snap.val().score, userName: snap.val().userName});
+                    if (count === 10) resolve(topTen);
+                });
+        }));
     }
 
     return {
         saveScore,
+        getTopTenScores
     }
 }
