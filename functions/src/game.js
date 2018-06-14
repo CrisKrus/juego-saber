@@ -1,5 +1,6 @@
 import scoreBoard from "./scoreBoard.js";
 import statistics from "./statistics.js";
+import client from "./client.js";
 
 export default function createGame(questionNavigator, scoreManager, timerManager) {
 
@@ -62,6 +63,9 @@ export default function createGame(questionNavigator, scoreManager, timerManager
     function onSave() {
         scoreBoardManager.saveUserAndScore(page.getInputName(), score.getScore());
         page.printPointsAndName(scoreBoardManager.getNames(), scoreBoardManager.getPoints());
+
+        client().saveScore(page.getInputName(), score.getScore(), stats);
+
         resetTimeAndPoints();
         page.cleanButtonsAndBoxes();
 
@@ -146,7 +150,12 @@ export default function createGame(questionNavigator, scoreManager, timerManager
                 answers: [
                     {id: 0, answer: "Madrid", isCorrect: false, idQuestion: 5},
                     {id: 1, answer: "Oporto", isCorrect: false, idQuestion: 5},
-                    {id: 2, answer: "Ciudad de Panamá", isCorrect: true, idQuestion: 5}
+                    {
+                        id: 2,
+                        answer: "Ciudad de Panamá",
+                        isCorrect: true,
+                        idQuestion: 5
+                    }
                 ]
             }
         ];
