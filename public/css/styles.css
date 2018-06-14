@@ -8,7 +8,7 @@ body{
     text-align: center;
 }
 
-.scores, .bonus{
+.scores, .bonus, .statistics, .top-ten{
     background: #FFCF8F;
 }
 
@@ -16,7 +16,7 @@ body{
     background: #FAEBD7;
 }
 
-.scores, .bonus{
+.scores, .bonus, .statistics, .top-ten{
     max-width: 500px;
     margin: auto;
 }

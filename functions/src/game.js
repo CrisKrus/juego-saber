@@ -20,6 +20,9 @@ export default function createGame(questionNavigator, scoreManager, timerManager
         initializeApplicationVariables();
         page.disableSendAnswer();
         setGameEvents();
+        remoteClient.getTopTenScores().then((scores) => {
+            page.printTopTenScores(scores);
+        });
     }
 
     function setGameEvents() {
@@ -222,6 +225,7 @@ export default function createGame(questionNavigator, scoreManager, timerManager
         const btnStart = document.getElementById('start-button');
         const btnSave = document.querySelector('.btnSave');
         const nameBox = document.getElementById('nameBox');
+        const topTenScores = document.getElementById('top-ten-scores');
 
         let onStarGame = function () {
         };
@@ -249,6 +253,14 @@ export default function createGame(questionNavigator, scoreManager, timerManager
             boxQuestions.classList.remove('invisible');
             btnSubmit.classList.toggle('invisible');
             btnStart.classList.toggle('invisible');
+        }
+
+        function printTopTenScores(scores) {
+            for(let s of scores) {
+                let li = document.createElement('li');
+                li.appendChild(document.createTextNode(s.userName + ' ' + s.score));
+                topTenScores.appendChild(li);
+            }
         }
 
         function printScore(score) {
@@ -369,22 +381,23 @@ export default function createGame(questionNavigator, scoreManager, timerManager
         }
 
         return {
-            setButtonsListeners,
             printScore,
-            updateMessage,
+            printTopTenScores,
             printQuestionAndOptions,
+            printPointsAndName,
+            printTimer,
+            updateMessage,
+            updateCorrectAnswers,
+            updateIncorrectAnswers,
             toggleInvisibleNameBox,
             disableSendAnswer,
-            printTimer,
-            getInputName,
-            setOnStarGame,
-            getOptionChecked,
-            setOnSubmitAnswer,
-            setOnSave,
             cleanButtonsAndBoxes,
-            printPointsAndName,
-            updateCorrectAnswers,
-            updateIncorrectAnswers
+            getInputName,
+            getOptionChecked,
+            setButtonsListeners,
+            setOnStarGame,
+            setOnSubmitAnswer,
+            setOnSave
         }
     }
 };
