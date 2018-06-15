@@ -4,9 +4,13 @@ node_js:
 sript:
   - yarn install
 install:
+  - yarn add chai
+  - yarn add express
   - yarn add pug
-  - yarn global add firebase-tools
   - yarn add firebase
+  - yarn add firebase-admin
+  - yarn add firebase-functions
+  - yarn global add firebase-tools
   - yarn add -D jest
   - yarn add -D babel-plugin-transform-es2015-modules-commonjs
   - yarn install
