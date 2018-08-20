@@ -13,6 +13,8 @@
 
 # Saber Ganar
 
+Esta aplicación está desplegada en [firebase](https://saber-ganar.firebaseapp.com)
+
 ## Reglas del juego
 
 - [ ] velocidad de respuesta, acierto o fallo
